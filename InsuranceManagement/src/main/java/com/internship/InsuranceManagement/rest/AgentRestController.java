@@ -1,15 +1,15 @@
 package com.internship.InsuranceManagement.rest;
 
 import com.internship.InsuranceManagement.entity.Agent;
+import com.internship.InsuranceManagement.entity.Claim;
 import com.internship.InsuranceManagement.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-    @RestController
+
+@RestController
     @RequestMapping("/api")
     public class AgentRestController {
         private final AgentService agentService;
@@ -23,5 +23,22 @@ import java.util.List;
         public List<Agent> getAgents() {
             return agentService.findAll();
         }
+
+        @GetMapping("/agents/{agentId}")
+        public Agent getAgent(@PathVariable int agentId){
+            return agentService.findById(agentId);
+        }
+
+        @PostMapping("/agents")
+        public Agent postAgent(@RequestBody Agent agent) {
+            agent.setAgentId(0);
+            return agentService.save(agent);
+        }
+    @DeleteMapping("/agents/{agentId}")
+    public void deleteAgent(@PathVariable int agentId) {
+        agentService.deleteById(agentId);
+    }
+
+
 
 }

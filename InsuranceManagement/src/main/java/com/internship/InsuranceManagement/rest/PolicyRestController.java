@@ -3,10 +3,7 @@ package com.internship.InsuranceManagement.rest;
 import com.internship.InsuranceManagement.entity.Policy;
 import com.internship.InsuranceManagement.service.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,8 +22,23 @@ public class PolicyRestController {
         return policyService.findAll();
     }
 
-    @GetMapping("/{agentId}/policies")
+    @GetMapping("/agent/{agentId}/policies")
     public List<Policy> getPoliciesOfAgent(@PathVariable int agentId) {
         return policyService.findPoliciesOfAgent(agentId);
+    }
+    @GetMapping("/policies/{policyId}")
+    public Policy getPolicy(@PathVariable int policyId){
+        return policyService.findById(policyId);
+    }
+
+    @PostMapping("/policies")
+    public Policy postPolicy(@RequestBody Policy policy){
+        policy.setPolicyId(0);
+        return policyService.save(policy);
+    }
+
+    @DeleteMapping("/policies/{policyId}")
+    public void deleteClaim(@PathVariable int claimId) {
+        policyService.deleteById(claimId);
     }
 }

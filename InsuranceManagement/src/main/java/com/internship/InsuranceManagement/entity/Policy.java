@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class Policy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long policyId;
+    private int policyId;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
@@ -53,11 +53,11 @@ public class Policy {
         this.agent = agent;
     }
 
-    public Long getPolicyId() {
+    public int getPolicyId() {
         return policyId;
     }
 
-    public void setPolicyId(Long policyId) {
+    public void setPolicyId(int policyId) {
         this.policyId = policyId;
     }
 
