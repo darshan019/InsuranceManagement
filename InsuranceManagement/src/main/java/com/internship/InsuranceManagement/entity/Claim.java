@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long claimId;
+    private int claimId;
 
     @ManyToOne
     @JoinColumn(name = "policy_id", nullable = false)
@@ -38,11 +38,11 @@ public class Claim {
     public Claim() {
     }
 
-    public Long getClaimId() {
+    public int getClaimId() {
         return claimId;
     }
 
-    public void setClaimId(Long claimId) {
+    public void setClaimId(int claimId) {
         this.claimId = claimId;
     }
 
