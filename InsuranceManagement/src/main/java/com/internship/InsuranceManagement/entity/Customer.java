@@ -35,7 +35,7 @@ public class Customer {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getId() {
+    public int getCustomerId() {
         return customerId;
     }
 
@@ -77,5 +77,9 @@ public class Customer {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 }

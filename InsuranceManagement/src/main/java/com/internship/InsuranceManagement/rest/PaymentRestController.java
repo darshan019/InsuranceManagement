@@ -2,26 +2,35 @@ package com.internship.InsuranceManagement.rest;
 
 
 import com.internship.InsuranceManagement.entity.Payment;
-import com.internship.InsuranceManagement.service.PaymnetService;
+import com.internship.InsuranceManagement.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class PaymentRestController {
-    private PaymnetService paymnetService;
+    private final PaymentService PaymentService;
 
     @Autowired
-    public PaymentRestController(PaymnetService paymnetService) {
-        this.paymnetService = paymnetService;
+    public PaymentRestController(PaymentService PaymentService) {
+        this.PaymentService = PaymentService;
     }
 
     @GetMapping("/payments")
     public List<Payment> getPayments() {
-        return paymnetService.findAll();
+        return PaymentService.findAll();
+    }
+
+    @PostMapping("/payment")
+    public Payment postPayment(@RequestBody Payment payment) {
+        payment.setPaymentId(0);
+        return PaymentService.save(payment);
+    }
+
+    @DeleteMapping("/payment/{paymentId}")
+    public void deletePayment(@PathVariable int paymentId) {
+        PaymentService.deleteById(paymentId);
     }
 }

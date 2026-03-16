@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId;
+    private int paymentId;
 
     @ManyToOne
     @JoinColumn(name = "policy_id", nullable = false)
@@ -31,11 +31,11 @@ public class Payment {
     public Payment() {
     }
 
-    public Long getPaymentId() {
+    public int getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(Long paymentId) {
+    public void setPaymentId(int paymentId) {
         this.paymentId = paymentId;
     }
 

@@ -4,7 +4,7 @@ import com.internship.InsuranceManagement.entity.Payment;
 
 import java.util.List;
 
-public interface PaymnetService {
+public interface PaymentService {
     List<Payment> findAll();
     Payment save(Payment payment);
     Payment findById(int id);

@@ -2,9 +2,7 @@ package com.internship.InsuranceManagement.rest;
 
 import com.internship.InsuranceManagement.entity.Customer;
 import com.internship.InsuranceManagement.service.CustomerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +18,17 @@ public class CustomerRestController {
     @GetMapping("/customers")
     public List<Customer> getCustomers() {
         return customerService.findAll();
+    }
+
+    @PostMapping("/customers")
+    public Customer postCustomer(@RequestBody Customer customer) {
+        customer.setCustomerId(0);
+        return customerService.save(customer);
+    }
+
+    @DeleteMapping("/customers/{customerId}")
+    public void deleteCustomer(@PathVariable int customerId) {
+        customerService.deleteById(customerId);
     }
 
 }
