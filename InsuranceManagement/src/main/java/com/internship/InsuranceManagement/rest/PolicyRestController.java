@@ -4,6 +4,7 @@ import com.internship.InsuranceManagement.entity.Policy;
 import com.internship.InsuranceManagement.service.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,5 +23,10 @@ public class PolicyRestController {
     @GetMapping("/policies")
     public List<Policy> getPolicies() {
         return policyService.findAll();
+    }
+
+    @GetMapping("/{agentId}/policies")
+    public List<Policy> getPoliciesOfAgent(@PathVariable int agentId) {
+        return policyService.findPoliciesOfAgent(agentId);
     }
 }

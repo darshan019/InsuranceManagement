@@ -9,4 +9,5 @@ public interface PolicyService {
     Policy save(Policy policy);
     Policy findById(int id);
     void deleteById(int id);
+    List<Policy> findPoliciesOfAgent(int agentId);
 }

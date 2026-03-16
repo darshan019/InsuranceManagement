@@ -21,4 +21,5 @@ public class CustomerRestController {
     public List<Customer> getCustomers() {
         return customerService.findAll();
     }
+
 }

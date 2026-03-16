@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -38,5 +39,10 @@ public class PolicyDAOImpl implements PolicyDAO {
     public void deleteById(int id) {
         Policy policy = entityManager.find(Policy.class, id);
         entityManager.remove(policy);
+    }
+
+    public List<Policy> findPoliciesByAgentId(@PathVariable int agentId) {
+        String query = "SELECT p FROM Policy p WHERE p.agent.agentId = :agentId";
+        return entityManager.createQuery(query, Policy.class).setParameter("agentId", agentId).getResultList();
     }
 }

@@ -38,4 +38,8 @@ public class PolicyServiceImpl implements PolicyService {
     public void deleteById(int id) {
         policyDAO.deleteById(id);
     }
+
+    public List<Policy> findPoliciesOfAgent(int agentId) {
+        return policyDAO.findPoliciesByAgentId(agentId);
+    }
 }

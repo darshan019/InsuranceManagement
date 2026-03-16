@@ -23,6 +23,10 @@ public class Policy {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "agent_id", nullable = false)
+    private Agent agent;
+
     @Column(nullable = false)
     private String policyNumber;
 
@@ -39,6 +43,14 @@ public class Policy {
 
 
     public Policy() {
+    }
+
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     public Long getPolicyId() {
