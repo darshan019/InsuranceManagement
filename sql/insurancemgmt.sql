@@ -90,14 +90,6 @@ CREATE TABLE Payment (
   FOREIGN KEY (policy_id) REFERENCES Policy(policy_id)
 );
 
--- CREATE TABLE Agent_To_Policy (
--- 	agent_to_policy_id INT AUTO_INCREMENT PRIMARY KEY,
---     agent_id INT NOT NULL,
---     policy_id INT NOT NULL,
--- 	FOREIGN KEY (policy_id) REFERENCES Policy(policy_id),
--- 	FOREIGN KEY (agent_id) REFERENCES Agent(agent_id)
--- );
-
 -- Insurance Types
 INSERT INTO Insurance_type (type_name, description) VALUES
 ('Motor', 'Motor insurance for vehicles'),

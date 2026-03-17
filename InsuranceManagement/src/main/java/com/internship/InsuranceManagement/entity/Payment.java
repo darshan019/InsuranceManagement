@@ -1,6 +1,8 @@
 package com.internship.InsuranceManagement.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,7 +16,7 @@ public class Payment {
     @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
 
-    @Column(nullable = false)
+    @CreationTimestamp
     private LocalDateTime paymentDate;
 
     @Column(nullable = false)
