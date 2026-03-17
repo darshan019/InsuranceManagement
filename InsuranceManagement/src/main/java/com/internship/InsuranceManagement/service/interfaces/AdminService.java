@@ -10,5 +10,5 @@ public interface AdminService {
     Admin save(Admin admin);
     Admin findById(int id);
     void deleteById(int id);
-    Claim approveClaimById(int claimId, int adminId);
+    Claim approveClaimById(int claimId, int adminId) throws Exception;
 }

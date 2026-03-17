@@ -24,7 +24,7 @@ public class AdminRestController {
     }
 
     @PatchMapping("/claims/approve/{claimId}/{adminId}")
-    public Claim approveClaimById(@PathVariable int claimId, @PathVariable int adminId) {
+    public Claim approveClaimById(@PathVariable int claimId, @PathVariable int adminId) throws Exception {
         return adminService.approveClaimById(claimId, adminId);
     }
 }

@@ -39,7 +39,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Claim approveClaimById(int claimId, int adminId) {
+    public Claim approveClaimById(int claimId, int adminId) throws Exception {
         return adminDAO.approveClaimById(claimId, adminId);
     }
 }
