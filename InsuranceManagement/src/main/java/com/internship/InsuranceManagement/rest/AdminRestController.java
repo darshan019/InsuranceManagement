@@ -1,11 +1,10 @@
 package com.internship.InsuranceManagement.rest;
 
 import com.internship.InsuranceManagement.entity.Admin;
-import com.internship.InsuranceManagement.service.AdminService;
+import com.internship.InsuranceManagement.entity.Claim;
+import com.internship.InsuranceManagement.service.interfaces.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +21,10 @@ public class AdminRestController {
     @GetMapping("/admins")
     public List<Admin> getAdmins() {
         return adminService.findAll();
+    }
+
+    @PatchMapping("/claims/approve/{claimId}/{adminId}")
+    public Claim approveClaimById(@PathVariable int claimId, @PathVariable int adminId) {
+        return adminService.approveClaimById(claimId, adminId);
     }
 }

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminId;
+    private int adminId;
 
     @Column(nullable = false)
     private String username;
@@ -24,18 +24,18 @@ public class Admin {
     public Admin() {
     }
 
-    public Admin(Long adminId, String username, String email, String password) {
+    public Admin(int adminId, String username, String email, String password) {
         this.adminId = adminId;
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public Long getAdminId() {
+    public int getAdminId() {
         return adminId;
     }
 
-    public void setAdminId(Long adminId) {
+    public void setAdminId(int adminId) {
         this.adminId = adminId;
     }
 

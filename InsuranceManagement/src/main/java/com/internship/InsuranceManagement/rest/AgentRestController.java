@@ -1,8 +1,7 @@
 package com.internship.InsuranceManagement.rest;
 
 import com.internship.InsuranceManagement.entity.Agent;
-import com.internship.InsuranceManagement.entity.Claim;
-import com.internship.InsuranceManagement.service.AgentService;
+import com.internship.InsuranceManagement.service.interfaces.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

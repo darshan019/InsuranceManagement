@@ -2,7 +2,7 @@ package com.internship.InsuranceManagement.rest;
 
 
 import com.internship.InsuranceManagement.entity.Category;
-import com.internship.InsuranceManagement.service.CategoryService;
+import com.internship.InsuranceManagement.service.interfaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

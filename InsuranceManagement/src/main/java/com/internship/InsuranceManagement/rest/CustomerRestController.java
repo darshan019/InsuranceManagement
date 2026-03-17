@@ -1,7 +1,7 @@
 package com.internship.InsuranceManagement.rest;
 
 import com.internship.InsuranceManagement.entity.Customer;
-import com.internship.InsuranceManagement.service.CustomerService;
+import com.internship.InsuranceManagement.service.interfaces.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

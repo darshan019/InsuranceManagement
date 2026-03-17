@@ -1,7 +1,7 @@
 package com.internship.InsuranceManagement.rest;
 
 import com.internship.InsuranceManagement.entity.Policy;
-import com.internship.InsuranceManagement.service.PolicyService;
+import com.internship.InsuranceManagement.service.interfaces.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
