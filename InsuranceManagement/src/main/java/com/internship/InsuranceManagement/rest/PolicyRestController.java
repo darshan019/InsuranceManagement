@@ -26,19 +26,20 @@ public class PolicyRestController {
     public List<Policy> getPoliciesOfAgent(@PathVariable int agentId) {
         return policyService.findPoliciesOfAgent(agentId);
     }
+
     @GetMapping("/policies/{policyId}")
-    public Policy getPolicy(@PathVariable int policyId){
+    public Policy getPolicy(@PathVariable int policyId) {
         return policyService.findById(policyId);
     }
 
     @PostMapping("/policies")
-    public Policy postPolicy(@RequestBody Policy policy){
+    public Policy postPolicy(@RequestBody Policy policy) {
         policy.setPolicyId(0);
         return policyService.save(policy);
     }
 
     @DeleteMapping("/policies/{policyId}")
-    public void deleteClaim(@PathVariable int claimId) {
-        policyService.deleteById(claimId);
+    public void deletePolicy(@PathVariable int policyId) {
+        policyService.deleteById(policyId);
     }
 }
