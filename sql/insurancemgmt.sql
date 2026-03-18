@@ -4,7 +4,7 @@ USE `InsuranceManagement_DB`;
 DROP TABLE IF EXISTS Payment;
 DROP TABLE IF EXISTS Claim;
 DROP TABLE IF EXISTS Policy;
-DROP TABLE IF EXISTS PolicyTemplate;
+DROP TABLE IF EXISTS Policy_template;
 DROP TABLE IF EXISTS Category;
 DROP TABLE IF EXISTS Insurance_type;
 DROP TABLE IF EXISTS Customer;

@@ -46,13 +46,9 @@ public class AgentDAOImpl implements AgentDAO {
 
     @Override
     public List<Customer> getCustomersByAgentId(int agentId) {
-        String query = "SELECT p.customer.customerId FROM Policy p WHERE p.agent.agentId = :agentId";
-        List<Integer> customerIdList = entityManager.createQuery(query, Integer.class).setParameter("agentId", agentId).getResultList();
-
-        List<Customer> customers = new ArrayList<>();
-        for (int id : customerIdList) {
-            customers.add(entityManager.find(Customer.class, id));
-        }
-        return customers;
+        String jpql = "SELECT p.customer FROM Policy p WHERE p.template.agent.agentId = :agentId";
+        return entityManager.createQuery(jpql, Customer.class)
+                .setParameter("agentId", agentId)
+                .getResultList();
     }
 }
