@@ -14,5 +14,6 @@ public interface PolicyDAO {
     void deleteById(int id);
 
     List<Policy> findPoliciesByAgentId(int agentId);
+    List<Policy> findPoliciesByCustomerId(int customerId);
 
 }

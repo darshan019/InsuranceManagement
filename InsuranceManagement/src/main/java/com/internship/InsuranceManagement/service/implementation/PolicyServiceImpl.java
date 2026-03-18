@@ -44,4 +44,9 @@ public class PolicyServiceImpl implements PolicyService {
     public List<Policy> findPoliciesOfAgent(int agentId) {
         return policyDAO.findPoliciesByAgentId(agentId);
     }
+
+    @Override
+    public List<Policy> findPoliciesByCustomerId(int customerId) {
+        return policyDAO.findPoliciesByCustomerId(customerId);
+    }
 }

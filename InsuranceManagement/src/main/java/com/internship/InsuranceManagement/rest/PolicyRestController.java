@@ -26,6 +26,10 @@ public class PolicyRestController {
     public List<Policy> getPoliciesOfAgent(@PathVariable int agentId) {
         return policyService.findPoliciesOfAgent(agentId);
     }
+    @GetMapping("/customer/{customerId}/policies")
+    public List<Policy> getPoliciesOfCustomer(@PathVariable int customerId) {
+        return policyService.findPoliciesByCustomerId(customerId);
+    }
 
     @GetMapping("/policies/{policyId}")
     public Policy getPolicy(@PathVariable int policyId) {

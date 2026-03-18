@@ -23,8 +23,5 @@ public class AdminRestController {
         return adminService.findAll();
     }
 
-    @PatchMapping("/claims/approve/{claimId}/{adminId}")
-    public Claim approveClaimById(@PathVariable int claimId, @PathVariable int adminId) throws Exception {
-        return adminService.approveClaimById(claimId, adminId);
-    }
+
 }

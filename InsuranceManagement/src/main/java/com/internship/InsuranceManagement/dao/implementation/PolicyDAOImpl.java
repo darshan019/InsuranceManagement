@@ -46,4 +46,11 @@ public class PolicyDAOImpl implements PolicyDAO {
         return entityManager.createQuery(query, Policy.class).setParameter("agentId",
                 agentId).getResultList();
     }
+
+    @Override
+    public List<Policy> findPoliciesByCustomerId(int customerId) {
+        String query = "SELECT p FROM Policy p WHERE p.customer.customerId = :customerId";
+        return entityManager.createQuery(query, Policy.class).setParameter("customerId",
+                customerId).getResultList();
+    }
 }

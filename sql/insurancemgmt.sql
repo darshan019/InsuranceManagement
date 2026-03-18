@@ -82,12 +82,14 @@ CREATE TABLE Claim (
 
 CREATE TABLE Payment (
   payment_id INT AUTO_INCREMENT PRIMARY KEY,
+  customer_id INT,
   policy_id INT NOT NULL,
   payment_date TIMESTAMP NOT NULL,
   amount DECIMAL(10,2) NOT NULL,
   payment_method VARCHAR(50),
   status VARCHAR(50) NOT NULL,
-  FOREIGN KEY (policy_id) REFERENCES Policy(policy_id)
+  FOREIGN KEY (policy_id) REFERENCES Policy(policy_id),
+  foreign key(customer_id) references Customer(customer_id)
 );
 
 -- Insurance Types
@@ -131,8 +133,8 @@ INSERT INTO Claim (policy_id, claim_date, description, claim_amount, status) VAL
 (3, NOW(), 'Life insurance payout request', 20000000, 'Pending');
 
 -- Payments
-INSERT INTO Payment (policy_id, payment_date, amount, payment_method, status) VALUES
-(1, NOW(), 1500.00, 'Credit Card', 'Completed');
+INSERT INTO Payment (customer_id,policy_id, payment_date, amount, payment_method, status) VALUES
+(1,1, NOW(), 1500.00, 'Credit Card', 'Completed');
 
 INSERT INTO Admin (username, email, password)
 VALUES ('admin1', 'admin1@example.com', 'adminpass');

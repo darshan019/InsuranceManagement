@@ -33,4 +33,5 @@ public class PaymentRestController {
     public void deletePayment(@PathVariable int paymentId) {
         PaymentService.deleteById(paymentId);
     }
+
 }
