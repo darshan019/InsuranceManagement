@@ -42,6 +42,11 @@ public class PolicyRestController {
         return policyService.save(policy);
     }
 
+    @PatchMapping("/policy/update/{policyId}")
+    public Policy updatePolicyPayment(@PathVariable int policyId) {
+        return policyService.checkPolicyPayment(policyId);
+    }
+
     @DeleteMapping("/policies/{policyId}")
     public void deletePolicy(@PathVariable int policyId) {
         policyService.deleteById(policyId);

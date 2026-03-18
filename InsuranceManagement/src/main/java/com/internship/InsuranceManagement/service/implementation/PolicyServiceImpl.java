@@ -49,4 +49,10 @@ public class PolicyServiceImpl implements PolicyService {
     public List<Policy> findPoliciesByCustomerId(int customerId) {
         return policyDAO.findPoliciesByCustomerId(customerId);
     }
+
+    @Override
+    @Transactional
+    public Policy checkPolicyPayment(int policyId) {
+        return policyDAO.checkPolicyPayment(policyId);
+    }
 }

@@ -6,8 +6,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -53,4 +54,35 @@ public class PolicyDAOImpl implements PolicyDAO {
         return entityManager.createQuery(query, Policy.class).setParameter("customerId",
                 customerId).getResultList();
     }
+
+    @Override
+    public Policy checkPolicyPayment(int policyId) {
+        String query = "SELECT p.paymentDate FROM Payment p WHERE p.policy.policyId = :policyId ORDER BY p.paymentDate DESC";
+        List<LocalDateTime> results = entityManager.createQuery(query, LocalDateTime.class)
+                .setParameter("policyId", policyId)
+                .setMaxResults(1)
+                .getResultList();
+
+        Policy policy = entityManager.find(Policy.class, policyId);
+
+        if (!results.isEmpty()) {
+            LocalDate lastPaymentDate = LocalDate.from(results.getFirst());
+
+            // Check if 30 days have passed
+            if (lastPaymentDate.plusDays(30).isBefore(LocalDate.now())) {
+                policy.setStatus("Payment Pending");
+                entityManager.merge(policy); // update status in DB
+            } else {
+                policy.setStatus("Payment Paid");
+                entityManager.merge(policy);
+            }
+        } else {
+            // No payment found at all
+            policy.setStatus("Payment Pending");
+            entityManager.merge(policy);
+        }
+
+        return policy;
+    }
+
 }

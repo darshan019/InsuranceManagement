@@ -2,11 +2,13 @@ package com.internship.InsuranceManagement.dao.implementation;
 
 import com.internship.InsuranceManagement.dao.interfaces.AgentDAO;
 import com.internship.InsuranceManagement.entity.Agent;
+import com.internship.InsuranceManagement.entity.Customer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -40,5 +42,17 @@ public class AgentDAOImpl implements AgentDAO {
         Agent agent = entityManager.find(Agent.class, id);
         entityManager.remove(agent);
 
+    }
+
+    @Override
+    public List<Customer> getCustomersByAgentId(int agentId) {
+        String query = "SELECT p.customer.customerId FROM Policy p WHERE p.agent.agentId = :agentId";
+        List<Integer> customerIdList = entityManager.createQuery(query, Integer.class).setParameter("agentId", agentId).getResultList();
+
+        List<Customer> customers = new ArrayList<>();
+        for (int id : customerIdList) {
+            customers.add(entityManager.find(Customer.class, id));
+        }
+        return customers;
     }
 }

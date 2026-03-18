@@ -16,4 +16,5 @@ public interface PolicyDAO {
     List<Policy> findPoliciesByAgentId(int agentId);
     List<Policy> findPoliciesByCustomerId(int customerId);
 
+    Policy checkPolicyPayment(int policyId);
 }

@@ -2,6 +2,7 @@ package com.internship.InsuranceManagement.service.implementation;
 
 import com.internship.InsuranceManagement.dao.interfaces.AgentDAO;
 import com.internship.InsuranceManagement.entity.Agent;
+import com.internship.InsuranceManagement.entity.Customer;
 import com.internship.InsuranceManagement.service.interfaces.AgentService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,10 @@ public class AgentServiceImpl implements AgentService {
     @Transactional
     public void deleteById(int id) {
         agentDAO.deleteById(id);
+    }
+
+    @Override
+    public List<Customer> getCustomers(int agentId) {
+        return agentDAO.getCustomersByAgentId(agentId);
     }
 }
