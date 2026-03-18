@@ -1,18 +1,18 @@
 CREATE DATABASE IF NOT EXISTS `InsuranceManagement_DB`;
 USE `InsuranceManagement_DB`;
 
-
-DROP TABLE IF EXISTS Claim;
 DROP TABLE IF EXISTS Payment;
+DROP TABLE IF EXISTS Claim;
 DROP TABLE IF EXISTS Policy;
+DROP TABLE IF EXISTS PolicyTemplate;
 DROP TABLE IF EXISTS Category;
-DROP TABLE IF EXISTS InsuranceType;
 DROP TABLE IF EXISTS Insurance_type;
 DROP TABLE IF EXISTS Customer;
 DROP TABLE IF EXISTS Admin;
-DROP TABLE IF EXISTS Agent_To_Policy;
+DROP TABLE IF EXISTS Agent;
 
 
+-- Customer table
 CREATE TABLE Customer (
   customer_id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(255) NOT NULL UNIQUE,
@@ -22,13 +22,15 @@ CREATE TABLE Customer (
   date_of_birth DATE
 );
 
+-- Admin table
 CREATE TABLE Admin (
   admin_id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL
 );
 
+-- Agent table
 CREATE TABLE Agent (
   agent_id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -36,12 +38,14 @@ CREATE TABLE Agent (
   phone VARCHAR(50)
 );
 
+-- Insurance types
 CREATE TABLE Insurance_type (
   type_id INT AUTO_INCREMENT PRIMARY KEY,
   type_name VARCHAR(255) NOT NULL,
   description VARCHAR(255)
 );
 
+-- Categories linked to insurance types
 CREATE TABLE Category (
   category_id INT AUTO_INCREMENT PRIMARY KEY,
   type_id INT NOT NULL,
@@ -51,22 +55,34 @@ CREATE TABLE Category (
   FOREIGN KEY (type_id) REFERENCES Insurance_type(type_id)
 );
 
-CREATE TABLE Policy (
-  policy_id INT AUTO_INCREMENT PRIMARY KEY,
-  customer_id INT NOT NULL,
+-- Policy_template table (catalog of available products)
+CREATE TABLE Policy_template (
+  template_id INT AUTO_INCREMENT PRIMARY KEY,
   agent_id INT NOT NULL,
   type_id INT NOT NULL,
   category_id INT NOT NULL,
-  policy_number VARCHAR(255) NOT NULL,
-  start_date TIMESTAMP NOT NULL,
-  end_date TIMESTAMP,
-  status VARCHAR(50) NOT NULL,
-  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+  template_name VARCHAR(255) NOT NULL,
+  premium_amount DECIMAL(10,2) NOT NULL,
+  coverage_amount DECIMAL(15,2) NOT NULL,
   FOREIGN KEY (agent_id) REFERENCES Agent(agent_id),
   FOREIGN KEY (type_id) REFERENCES Insurance_type(type_id),
   FOREIGN KEY (category_id) REFERENCES Category(category_id)
 );
 
+-- Policy table (customer purchases linked to templates)
+CREATE TABLE Policy (
+  policy_id INT AUTO_INCREMENT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  template_id INT NOT NULL,
+  policy_number VARCHAR(255) NOT NULL UNIQUE,
+  start_date TIMESTAMP NOT NULL,
+  end_date TIMESTAMP,
+  status VARCHAR(50) NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+  FOREIGN KEY (template_id) REFERENCES Policy_template(template_id)
+);
+
+-- Claim table
 CREATE TABLE Claim (
   claim_id INT AUTO_INCREMENT PRIMARY KEY,
   policy_id INT NOT NULL,
@@ -80,19 +96,22 @@ CREATE TABLE Claim (
   FOREIGN KEY (approved_by) REFERENCES Admin(admin_id)
 );
 
+-- Payment table
 CREATE TABLE Payment (
   payment_id INT AUTO_INCREMENT PRIMARY KEY,
-  customer_id INT,
+  customer_id INT NOT NULL,
   policy_id INT NOT NULL,
   payment_date TIMESTAMP NOT NULL,
   amount DECIMAL(10,2) NOT NULL,
   payment_method VARCHAR(50),
   status VARCHAR(50) NOT NULL,
   FOREIGN KEY (policy_id) REFERENCES Policy(policy_id),
-  foreign key(customer_id) references Customer(customer_id)
+  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
 );
 
--- Insurance Types
+-- Seed data
+
+-- Insurance types
 INSERT INTO Insurance_type (type_name, description) VALUES
 ('Motor', 'Motor insurance for vehicles'),
 ('Property', 'Property insurance for houses and buildings'),
@@ -120,11 +139,18 @@ INSERT INTO Agent (name, email, phone) VALUES
 ('Ravi Kumar', 'ravi.agent@example.com', '9876543210'),
 ('Priya Sharma', 'priya.agent@example.com', '9123456789');
 
--- Policies (linked to agents + customers)
-INSERT INTO Policy (customer_id, agent_id, type_id, category_id, policy_number, start_date, end_date, status) VALUES
-(1, 1, 1, 1, 'POL-MOT-0001', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active'),
-(2, 2, 2, 5, 'POL-PROP-0002', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active'),
-(3, 1, 3, 8, 'POL-LIFE-0003', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active');
+-- Policy templates (catalog)
+INSERT INTO Policy_template (agent_id, type_id, category_id, template_name, premium_amount, coverage_amount) VALUES
+(1, 1, 1, 'Motor – 2 Wheeler', 1000, 500000),
+(1, 1, 3, 'Motor – 4 Wheeler', 2500, 1200000),
+(2, 2, 5, 'Property – Medium', 20000, 15000000),
+(1, 3, 8, 'Life – Premium', 9600, 20000000);
+
+-- Customer policies (purchases linked to templates)
+INSERT INTO Policy (customer_id, template_id, policy_number, start_date, end_date, status) VALUES
+(1, 1, 'POL-MOT-0001', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active'),
+(2, 3, 'POL-PROP-0002', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active'),
+(3, 4, 'POL-LIFE-0003', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active');
 
 -- Claims
 INSERT INTO Claim (policy_id, claim_date, description, claim_amount, status) VALUES
@@ -132,14 +158,23 @@ INSERT INTO Claim (policy_id, claim_date, description, claim_amount, status) VAL
 (2, NOW(), 'Fire damage to kitchen', 150000, 'Approved'),
 (3, NOW(), 'Life insurance payout request', 20000000, 'Pending');
 
--- Payments
-INSERT INTO Payment (customer_id,policy_id, payment_date, amount, payment_method, status) VALUES
-(1,1, NOW(), 1500.00, 'Credit Card', 'Completed');
+-- Payments (with one deliberately old payment for testing)
+INSERT INTO Payment (customer_id, policy_id, payment_date, amount, payment_method, status) VALUES
+(1, 1, '2026-02-10 11:38:05', 1500.00, 'Credit Card', 'Completed'),
+(2, 2, NOW(), 20000.00, 'Net Banking', 'Completed'),
+(3, 3, NOW(), 9600.00, 'Debit Card', 'Completed');
 
+-- Admin
 INSERT INTO Admin (username, email, password)
 VALUES ('admin1', 'admin1@example.com', 'adminpass');
 
+-- Approve claim #2
 UPDATE Claim
 SET approved_by = 1, approved_at = NOW(), status = 'Approved'
 WHERE claim_id = 2;
 
+-- Check data
+SELECT * FROM Policy_template;
+SELECT * FROM Policy;
+SELECT * FROM Payment;
+SELECT * FROM Claim;
