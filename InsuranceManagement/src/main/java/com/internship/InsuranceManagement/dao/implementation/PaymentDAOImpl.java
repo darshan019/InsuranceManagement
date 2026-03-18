@@ -39,4 +39,6 @@ public class PaymentDAOImpl implements PaymentDAO {
         Payment payment = entityManager.find(Payment.class, id);
         entityManager.remove(payment);
     }
+
+
 }

@@ -12,6 +12,12 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int paymentId;
 
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+
     @ManyToOne
     @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
@@ -39,6 +45,16 @@ public class Payment {
 
     public void setPaymentId(int paymentId) {
         this.paymentId = paymentId;
+    }
+
+
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Policy getPolicy() {

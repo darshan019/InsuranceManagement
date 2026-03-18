@@ -62,7 +62,4 @@ public class AdminDAOImpl implements AdminDAO {
 
         return entityManager.find(Claim.class, claimId);
     }
-
-
-    /**/
 }
