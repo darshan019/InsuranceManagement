@@ -12,4 +12,5 @@ public interface PolicyService {
     List<Policy> findPoliciesOfAgent(int agentId);
     List<Policy> findPoliciesByCustomerId(int customerId);
     Policy checkPolicyPayment(int policyId);
+    Policy buyPolicy(int customerId, int templateId);
 }
