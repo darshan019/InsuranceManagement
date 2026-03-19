@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-    @RequestMapping("/api")
+    @RequestMapping("/api/agents")
     public class AgentRestController {
         private final AgentService agentService;
 
@@ -19,27 +19,27 @@ import java.util.List;
             this.agentService = agentService;
         }
 
-        @GetMapping("/agents")
+        @GetMapping("/")
         public List<Agent> getAgents() {
             return agentService.findAll();
         }
 
-        @GetMapping("/agents/{agentId}")
+        @GetMapping("/{agentId}")
         public Agent getAgent(@PathVariable int agentId){
             return agentService.findById(agentId);
         }
 
-        @PostMapping("/agents")
+        @PostMapping("/")
         public Agent postAgent(@RequestBody Agent agent) {
             agent.setAgentId(0);
             return agentService.save(agent);
         }
-        @DeleteMapping("/agents/{agentId}")
+        @DeleteMapping("/{agentId}")
         public void deleteAgent(@PathVariable int agentId) {
         agentService.deleteById(agentId);
     }
 
-        @GetMapping("/agent/{agentId}/customers")
+        @GetMapping("/{agentId}/customers")
         public List<Customer> getCustomers(@PathVariable int agentId) {
             return agentService.getCustomers(agentId);
         }
