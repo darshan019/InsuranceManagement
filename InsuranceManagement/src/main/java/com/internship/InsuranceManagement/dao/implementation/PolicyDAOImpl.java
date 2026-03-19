@@ -43,7 +43,7 @@ public class PolicyDAOImpl implements PolicyDAO {
     }
 
     public List<Policy> findPoliciesByAgentId(int agentId) {
-        String query = "SELECT p FROM Policy p WHERE p.agent.agentId = :agentId";
+        String query = "SELECT p FROM Policy p WHERE p.template.agent.agentId = :agentId";
         return entityManager.createQuery(query, Policy.class).setParameter("agentId",
                 agentId).getResultList();
     }
