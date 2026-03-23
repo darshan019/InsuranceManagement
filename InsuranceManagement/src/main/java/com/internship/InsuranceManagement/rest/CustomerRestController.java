@@ -3,6 +3,7 @@ package com.internship.InsuranceManagement.rest;
 import com.internship.InsuranceManagement.entity.Customer;
 import com.internship.InsuranceManagement.service.interfaces.CustomerService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -30,5 +31,15 @@ public class CustomerRestController {
     public void deleteCustomer(@PathVariable int customerId) {
         customerService.deleteById(customerId);
     }
+    @GetMapping("/customers/me")
+    public Customer getMyDetails() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Customer c = customerService.findByEmail(email);
+        if (c == null) {
+            throw new RuntimeException("User not found in customer table.");
+        }
+        return c;
+    }
+
 
 }
