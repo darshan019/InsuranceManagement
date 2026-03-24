@@ -7,6 +7,7 @@ import com.internship.InsuranceManagement.service.interfaces.PolicyService;
 import jakarta.transaction.Transactional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -45,5 +46,15 @@ public class CustomerRestController {
     public void deleteCustomer(@PathVariable int customerId) {
         customerService.deleteById(customerId);
     }
+    @GetMapping("/customers/me")
+    public Customer getMyDetails() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Customer c = customerService.findByEmail(email);
+        if (c == null) {
+            throw new RuntimeException("User not found in customer table.");
+        }
+        return c;
+    }
+
 
 }

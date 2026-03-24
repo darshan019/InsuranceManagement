@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "Customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,15 +24,21 @@ public class Customer {
 
     private LocalDate dateOfBirth;
 
+    private long phoneNumber;
+
+    private String role = "USER";
+
     public Customer() {
     }
 
-    public Customer(String username, String password, String email, String address, LocalDate dateOfBirth) {
+    public Customer(String username, String password, String email, String address, LocalDate dateOfBirth, int phoneNumber, String role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.address = address;
         this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
     }
 
     public int getCustomerId() {
@@ -82,4 +88,12 @@ public class Customer {
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
+
+    public long getPhoneNumber() { return phoneNumber; }
+
+    public void setPhoneNumber(long phoneNumber) { this.phoneNumber = phoneNumber; }
+
+    public String getRole() { return role; }
+
+    public void setRole(String role) { this.role = role; }
 }

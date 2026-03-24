@@ -39,4 +39,10 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteById(int id) {
         customerDAO.deleteById(id);
     }
+
+    @Override
+    public Customer findByEmail(String email) {
+        return customerDAO.findByEmail(email);
+    }
+
 }
