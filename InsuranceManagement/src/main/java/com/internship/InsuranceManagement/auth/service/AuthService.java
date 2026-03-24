@@ -5,6 +5,7 @@ import com.internship.InsuranceManagement.auth.dto.AuthResponse;
 import com.internship.InsuranceManagement.auth.dto.LoginRequest;
 import com.internship.InsuranceManagement.auth.dto.RegisterRequest;
 import com.internship.InsuranceManagement.auth.repository.AdminAuthRepository;
+import com.internship.InsuranceManagement.auth.repository.AgentAuthRepository;
 import com.internship.InsuranceManagement.auth.repository.CustomerAuthRepository;
 import com.internship.InsuranceManagement.entity.Admin;
 import com.internship.InsuranceManagement.entity.Customer;
@@ -20,14 +21,17 @@ public class AuthService {
     private final CustomerAuthRepository customerRepo;
     private final AdminAuthRepository adminRepo;
     private final JwtUtil jwtUtil;
+    private final AgentAuthRepository agentRepo;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public AuthService(CustomerAuthRepository customerRepo,
                        AdminAuthRepository adminRepo,
+                       AgentAuthRepository agentRepo,
                        JwtUtil jwtUtil) {
         this.customerRepo = customerRepo;
         this.adminRepo = adminRepo;
+        this.agentRepo = agentRepo;
         this.jwtUtil = jwtUtil;
     }
 
@@ -87,6 +91,8 @@ public class AuthService {
             String token = jwtUtil.generateToken(a.getEmail(), "ADMIN");
             return new AuthResponse("Admin login successful!", token);
         }
+
+
 
         // Step 3: Nobody found
         throw new RuntimeException("User not found!");

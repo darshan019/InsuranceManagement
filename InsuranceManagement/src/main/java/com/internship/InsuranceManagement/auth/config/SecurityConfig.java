@@ -33,8 +33,15 @@ public class SecurityConfig {
                 // admin-only routes
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
+                .requestMatchers("/api/agent/**").hasRole("AGENT")
+                .requestMatchers("/api/agent/**").hasRole("ADMIN")   // Admin can see everything
+
                 // all BUSINESS APIs (customer, policy, claim, payment...)
                 .requestMatchers("/api/**").hasAnyRole("USER","ADMIN")
+
+                .requestMatchers("/api/agent/{agentId}/customers").hasAnyRole("AGENT", "ADMIN")
+                .requestMatchers("/api/agent/{agentId}/policies").hasAnyRole("AGENT", "ADMIN")
+
 
                 // everything else need authentication
                 .anyRequest().authenticated()

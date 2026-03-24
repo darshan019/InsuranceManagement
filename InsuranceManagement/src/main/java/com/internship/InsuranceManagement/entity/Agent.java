@@ -17,7 +17,14 @@ public class Agent {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
     private String phone;
+
+    private String role = "AGENT";
+
+
 
     public Agent() {}
 

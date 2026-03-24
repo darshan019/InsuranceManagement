@@ -75,6 +75,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 userDetails = adminOpt.get();
             }
 
+
+
             // If user exists → set authentication
             if (userDetails != null) {
 
