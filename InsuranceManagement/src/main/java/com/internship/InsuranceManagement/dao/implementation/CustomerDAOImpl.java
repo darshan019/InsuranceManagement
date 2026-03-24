@@ -2,6 +2,7 @@ package com.internship.InsuranceManagement.dao.implementation;
 
 import com.internship.InsuranceManagement.dao.interfaces.CustomerDAO;
 import com.internship.InsuranceManagement.entity.Customer;
+import com.internship.InsuranceManagement.entity.Policy;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
