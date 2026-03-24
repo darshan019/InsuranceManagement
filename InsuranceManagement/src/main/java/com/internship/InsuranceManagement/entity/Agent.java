@@ -22,10 +22,6 @@ public class Agent {
 
     private String phone;
 
-    private String role = "AGENT";
-
-
-
     public Agent() {}
 
     public Agent(String name, String email, String password,String phone) {

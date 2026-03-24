@@ -8,6 +8,5 @@ public interface CustomerDAO {
     List<Customer> findAll();
     Customer findById(int id);
     Customer save(Customer customer);
-    Customer findByEmail(String email);
     void deleteById(int id);
 }
