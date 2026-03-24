@@ -3,6 +3,7 @@ package com.internship.InsuranceManagement.rest;
 import com.internship.InsuranceManagement.entity.PolicyTemplate;
 import com.internship.InsuranceManagement.service.interfaces.PolicyTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,32 +20,38 @@ public class PolicyTemplateRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')")
     public List<PolicyTemplate> getAllTemplates() {
         return templateService.getAllTemplates();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')")
     public PolicyTemplate getTemplateById(@PathVariable int id) {
         return templateService.getTemplateById(id);
     }
 
     @GetMapping("/agent/{agentId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public List<PolicyTemplate> getTemplatesByAgent(@PathVariable int agentId) {
         return templateService.getTemplatesByAgentId(agentId);
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public PolicyTemplate createTemplate(@RequestBody PolicyTemplate template) {
         return templateService.createOrUpdateTemplate(template);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public PolicyTemplate updateTemplate(@PathVariable int id, @RequestBody PolicyTemplate template) {
         template.setTemplateId(id);
         return templateService.createOrUpdateTemplate(template);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteTemplate(@PathVariable int id) {
         templateService.deleteTemplate(id);
     }

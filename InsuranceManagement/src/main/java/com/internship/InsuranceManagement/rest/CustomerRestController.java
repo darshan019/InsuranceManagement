@@ -5,6 +5,7 @@ import com.internship.InsuranceManagement.entity.Policy;
 import com.internship.InsuranceManagement.service.interfaces.CustomerService;
 import com.internship.InsuranceManagement.service.interfaces.PolicyService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,22 +22,26 @@ public class CustomerRestController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public List<Customer> getCustomers() {
         return customerService.findAll();
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     public Customer postCustomer(@RequestBody Customer customer) {
         customer.setCustomerId(0);
         return customerService.save(customer);
     }
 
     @PostMapping("/{customerId}/buyPolicy/{policyTemplateId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'AGENT')")
     public Policy buyPolicy(@PathVariable int customerId, @PathVariable int policyTemplateId) {
         return PolicyService.buyPolicy(customerId, policyTemplateId);
     }
 
     @DeleteMapping("/{customerId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteCustomer(@PathVariable int customerId) {
         customerService.deleteById(customerId);
     }

@@ -4,6 +4,7 @@ import com.internship.InsuranceManagement.entity.Admin;
 import com.internship.InsuranceManagement.entity.Claim;
 import com.internship.InsuranceManagement.service.interfaces.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class AdminRestController {
     }
 
     @GetMapping("/admins")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<Admin> getAdmins() {
         return adminService.findAll();
     }

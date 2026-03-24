@@ -1,6 +1,8 @@
 package com.internship.InsuranceManagement.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,8 +16,11 @@ public class Claim {
     @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
 
-    @Column(nullable = false)
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime claimDate;
+
 
     @Lob
     private String description;
@@ -29,6 +34,7 @@ public class Claim {
     @ManyToOne
     @JoinColumn(name = "approved_by")
     private Admin approvedBy;
+
 
     private LocalDateTime approvedAt;
 

@@ -4,6 +4,7 @@ package com.internship.InsuranceManagement.rest;
 import com.internship.InsuranceManagement.entity.Category;
 import com.internship.InsuranceManagement.service.interfaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ public class CategoryRestController {
     }
 
     @GetMapping("/categories")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')")
     public List<Category> getCategories(){
         return categoryService.findAll();
     }

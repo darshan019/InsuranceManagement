@@ -17,13 +17,17 @@ public class Agent {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
     private String phone;
 
     public Agent() {}
 
-    public Agent(String name, String email, String phone) {
+    public Agent(String name, String email, String password,String phone) {
         this.name = name;
         this.email = email;
+        this.password=password;
         this.phone = phone;
     }
 
@@ -50,6 +54,14 @@ public class Agent {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
