@@ -38,7 +38,7 @@ public class PolicyTemplateRestController {
     }
 
     @PostMapping("/")
-    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public PolicyTemplate createTemplate(@RequestBody PolicyTemplate template) {
         return templateService.createOrUpdateTemplate(template);
     }

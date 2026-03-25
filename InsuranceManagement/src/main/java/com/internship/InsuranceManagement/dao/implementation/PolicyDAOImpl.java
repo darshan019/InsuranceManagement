@@ -1,15 +1,17 @@
 package com.internship.InsuranceManagement.dao.implementation;
 
-import com.internship.InsuranceManagement.dao.interfaces.PolicyDAO;
-import com.internship.InsuranceManagement.entity.Policy;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.internship.InsuranceManagement.dao.interfaces.PolicyDAO;
+import com.internship.InsuranceManagement.entity.Payment;
+import com.internship.InsuranceManagement.entity.Policy;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 @Repository
 public class PolicyDAOImpl implements PolicyDAO {
@@ -57,32 +59,40 @@ public class PolicyDAOImpl implements PolicyDAO {
 
     @Override
     public Policy checkPolicyPayment(int policyId) {
-        String query = "SELECT p.paymentDate FROM Payment p WHERE p.policy.policyId = :policyId ORDER BY p.paymentDate DESC";
-        List<LocalDateTime> results = entityManager.createQuery(query, LocalDateTime.class)
+        // Fetch the latest payment record (full entity, not just the date)
+        String query = "SELECT p FROM Payment p WHERE p.policy.policyId = :policyId ORDER BY p.paymentDate DESC";
+
+        List<Payment> payments = entityManager.createQuery(query, Payment.class)
                 .setParameter("policyId", policyId)
                 .setMaxResults(1)
                 .getResultList();
 
         Policy policy = entityManager.find(Policy.class, policyId);
 
-        if (!results.isEmpty()) {
-            LocalDate lastPaymentDate = LocalDate.from(results.getFirst());
+        if (!payments.isEmpty()) {
+            Payment Payment = payments.getFirst();
+            LocalDate lastPaymentDate = Payment.getPaymentDate().toLocalDate();
 
-            // Check if 30 days have passed
-            if (lastPaymentDate.plusDays(30).isBefore(LocalDate.now())) {
-                policy.setStatus("Payment Pending");
-                entityManager.merge(policy); // update status in DB
+            // If 30 days have passed since last payment
+            if (!lastPaymentDate.plusDays(30).isAfter(LocalDate.now())) {
+                policy.setStatus("Due");
+                Payment.setStatus("Payment Pending");
             } else {
-                policy.setStatus("Payment Paid");
-                entityManager.merge(policy);
+                policy.setStatus("Active");
+                Payment.setStatus("Payment Completed");
             }
+            // Persist the updated payment status
+            entityManager.merge(Payment);
         } else {
             // No payment found at all
             policy.setStatus("Payment Pending");
-            entityManager.merge(policy);
         }
-
+        // Persist the updated policy status
+        entityManager.merge(policy);
         return policy;
     }
+
+
+
 
 }
