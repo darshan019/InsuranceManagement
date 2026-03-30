@@ -2,6 +2,7 @@ package com.internship.InsuranceManagement.rest;
 
 import com.internship.InsuranceManagement.entity.Agent;
 import com.internship.InsuranceManagement.entity.Customer;
+import com.internship.InsuranceManagement.dto.CustomerDTO;
 import com.internship.InsuranceManagement.service.interfaces.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,8 +48,17 @@ import java.util.List;
 
         @GetMapping("/{agentId}/customers")
         @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-        public List<Customer> getCustomers(@PathVariable int agentId) {
-            return agentService.getCustomers(agentId);
+        public List<CustomerDTO> getCustomers(@PathVariable int agentId) {
+            List<Customer> customers = agentService.getCustomers(agentId);
+            return customers.stream()
+                .map(c -> new CustomerDTO(
+                    c.getCustomerId(),
+                    c.getUsername(),
+                    c.getEmail(),
+                    c.getAddress(),
+                    c.getDateOfBirth()
+                ))
+                .toList();
         }
 
 

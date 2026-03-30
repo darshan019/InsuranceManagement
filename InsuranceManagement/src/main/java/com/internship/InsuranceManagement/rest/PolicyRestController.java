@@ -1,5 +1,7 @@
 package com.internship.InsuranceManagement.rest;
 
+import com.internship.InsuranceManagement.dto.DTOMapper;
+import com.internship.InsuranceManagement.dto.PolicyDTO;
 import com.internship.InsuranceManagement.entity.Policy;
 import com.internship.InsuranceManagement.service.interfaces.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,26 +22,26 @@ public class PolicyRestController {
 
     @GetMapping("/policies")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-    public List<Policy> getPolicies() {
-        return policyService.findAll();
+    public List<PolicyDTO> getPolicies() {
+        return policyService.findAll().stream().map(DTOMapper::toPolicyDTO).toList();
     }
 
     @GetMapping("/agent/{agentId}/policies")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-    public List<Policy> getPoliciesOfAgent(@PathVariable int agentId) {
-        return policyService.findPoliciesOfAgent(agentId);
+    public List<PolicyDTO> getPoliciesOfAgent(@PathVariable int agentId) {
+        return policyService.findPoliciesOfAgent(agentId).stream().map(DTOMapper::toPolicyDTO).toList();
     }
 
     @GetMapping("/customer/{customerId}/policies")
     @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
-    public List<Policy> getPoliciesOfCustomer(@PathVariable int customerId) {
-        return policyService.findPoliciesByCustomerId(customerId);
+    public List<PolicyDTO> getPoliciesOfCustomer(@PathVariable int customerId) {
+        return policyService.findPoliciesByCustomerId(customerId).stream().map(DTOMapper::toPolicyDTO).toList();
     }
 
     @GetMapping("/policies/{policyId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')")
-    public Policy getPolicy(@PathVariable int policyId) {
-        return policyService.findById(policyId);
+    public PolicyDTO getPolicy(@PathVariable int policyId) {
+        return DTOMapper.toPolicyDTO(policyService.findById(policyId));
     }
 
     @PostMapping("/policies")
@@ -51,8 +53,8 @@ public class PolicyRestController {
 
     @PatchMapping("/policy/update/{policyId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-    public Policy updatePolicyPayment(@PathVariable int policyId) {
-        return policyService.checkPolicyPayment(policyId);
+    public PolicyDTO updatePolicyPayment(@PathVariable int policyId) {
+        return DTOMapper.toPolicyDTO(policyService.checkPolicyPayment(policyId));
     }
 
     @DeleteMapping("/policies/{policyId}")

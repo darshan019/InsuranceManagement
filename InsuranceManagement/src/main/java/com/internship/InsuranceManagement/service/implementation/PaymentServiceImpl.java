@@ -43,6 +43,10 @@ public class PaymentServiceImpl implements PaymentService {
         paymentDAO.deleteById(id);
     }
 
+    @Override
+    public List<Payment> findByCustomerId(int customerId) {
+        return paymentDAO.findByCustomerId(customerId);
+    }
 
 
 

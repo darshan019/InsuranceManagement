@@ -9,6 +9,7 @@ public interface PaymentDAO {
     Payment findById(int id);
     Payment save(Payment payment);
     void deleteById(int id);
+    List<Payment> findByCustomerId(int customerId);
 
 
 

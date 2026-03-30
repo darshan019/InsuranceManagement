@@ -1,6 +1,8 @@
 package com.internship.InsuranceManagement.rest;
 
 
+import com.internship.InsuranceManagement.dto.DTOMapper;
+import com.internship.InsuranceManagement.dto.PaymentDTO;
 import com.internship.InsuranceManagement.entity.Payment;
 import com.internship.InsuranceManagement.service.interfaces.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,10 @@ public class PaymentRestController {
 
     @GetMapping("/payments")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-    public List<Payment> getPayments() {
-        return PaymentService.findAll();
+    public List<PaymentDTO> getPayments() {
+        return PaymentService.findAll().stream()
+                .map(DTOMapper::toPaymentDTO)
+                .toList();
     }
 
     @PostMapping("/payment")
@@ -36,6 +40,14 @@ public class PaymentRestController {
     @PreAuthorize("hasRole('ADMIN')")
     public void deletePayment(@PathVariable int paymentId) {
         PaymentService.deleteById(paymentId);
+    }
+
+    @GetMapping("/payments/customer/{customerId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
+    public List<PaymentDTO> getPaymentsByCustomerId(@PathVariable int customerId) {
+        return PaymentService.findByCustomerId(customerId).stream()
+                .map(DTOMapper::toPaymentDTO)
+                .toList();
     }
 
 }

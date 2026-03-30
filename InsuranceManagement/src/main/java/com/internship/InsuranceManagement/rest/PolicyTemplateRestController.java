@@ -1,5 +1,7 @@
 package com.internship.InsuranceManagement.rest;
 
+import com.internship.InsuranceManagement.dto.DTOMapper;
+import com.internship.InsuranceManagement.dto.PolicyTemplateDTO;
 import com.internship.InsuranceManagement.entity.PolicyTemplate;
 import com.internship.InsuranceManagement.service.interfaces.PolicyTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +23,24 @@ public class PolicyTemplateRestController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')")
-    public List<PolicyTemplate> getAllTemplates() {
-        return templateService.getAllTemplates();
+    public List<PolicyTemplateDTO> getAllTemplates() {
+        return templateService.getAllTemplates().stream()
+                .map(DTOMapper::toPolicyTemplateDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')")
-    public PolicyTemplate getTemplateById(@PathVariable int id) {
-        return templateService.getTemplateById(id);
+    public PolicyTemplateDTO getTemplateById(@PathVariable int id) {
+        return DTOMapper.toPolicyTemplateDTO(templateService.getTemplateById(id));
     }
 
     @GetMapping("/agent/{agentId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-    public List<PolicyTemplate> getTemplatesByAgent(@PathVariable int agentId) {
-        return templateService.getTemplatesByAgentId(agentId);
+    public List<PolicyTemplateDTO> getTemplatesByAgent(@PathVariable int agentId) {
+        return templateService.getTemplatesByAgentId(agentId).stream()
+                .map(DTOMapper::toPolicyTemplateDTO)
+                .toList();
     }
 
     @PostMapping("/")

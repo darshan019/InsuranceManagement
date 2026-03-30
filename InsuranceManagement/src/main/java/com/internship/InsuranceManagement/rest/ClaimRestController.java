@@ -1,6 +1,8 @@
 
 package com.internship.InsuranceManagement.rest;
 
+import com.internship.InsuranceManagement.dto.ClaimDTO;
+import com.internship.InsuranceManagement.dto.DTOMapper;
 import com.internship.InsuranceManagement.entity.Claim;
 import com.internship.InsuranceManagement.service.interfaces.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +23,16 @@ public class ClaimRestController {
 
     @GetMapping("/claims")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-    public List<Claim> getClaims() {
-        return claimService.findAll();
+    public List<ClaimDTO> getClaims() {
+        return claimService.findAll().stream()
+                .map(DTOMapper::toClaimDTO)
+                .toList();
     }
 
     @GetMapping("/claims/{claimId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')")
-    public Claim getClaim(@PathVariable int claimId) {
-        return claimService.findById(claimId);
+    public ClaimDTO getClaim(@PathVariable int claimId) {
+        return DTOMapper.toClaimDTO(claimService.findById(claimId));
     }
 
     @PostMapping("/claims")

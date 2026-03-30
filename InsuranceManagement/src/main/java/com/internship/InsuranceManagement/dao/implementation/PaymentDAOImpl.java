@@ -43,6 +43,14 @@ public class PaymentDAOImpl implements PaymentDAO {
         entityManager.remove(payment);
     }
 
+    @Override
+    public List<Payment> findByCustomerId(int customerId) {
+        String jpql = "SELECT p FROM Payment p WHERE p.customer.customerId = :customerId";
+        return entityManager.createQuery(jpql, Payment.class)
+                .setParameter("customerId", customerId)
+                .getResultList();
+    }
+
 
 
 }

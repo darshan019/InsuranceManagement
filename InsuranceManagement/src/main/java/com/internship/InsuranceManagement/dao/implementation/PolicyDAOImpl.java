@@ -59,7 +59,6 @@ public class PolicyDAOImpl implements PolicyDAO {
 
     @Override
     public Policy checkPolicyPayment(int policyId) {
-        // Fetch the latest payment record (full entity, not just the date)
         String query = "SELECT p FROM Payment p WHERE p.policy.policyId = :policyId ORDER BY p.paymentDate DESC";
 
         List<Payment> payments = entityManager.createQuery(query, Payment.class)
@@ -73,26 +72,19 @@ public class PolicyDAOImpl implements PolicyDAO {
             Payment Payment = payments.getFirst();
             LocalDate lastPaymentDate = Payment.getPaymentDate().toLocalDate();
 
-            // If 30 days have passed since last payment
-            if (!lastPaymentDate.plusDays(30).isAfter(LocalDate.now())) {
+            if (!lastPaymentDate.plusDays(365).isAfter(LocalDate.now())) {
                 policy.setStatus("Due");
                 Payment.setStatus("Payment Pending");
             } else {
                 policy.setStatus("Active");
                 Payment.setStatus("Payment Completed");
             }
-            // Persist the updated payment status
+
             entityManager.merge(Payment);
         } else {
-            // No payment found at all
             policy.setStatus("Payment Pending");
         }
-        // Persist the updated policy status
         entityManager.merge(policy);
         return policy;
     }
-
-
-
-
 }

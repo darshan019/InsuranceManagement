@@ -28,7 +28,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    // ===================== ADMIN LOGIN =====================
+
     @PostMapping("/admin/login")
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequest loginRequest) {
         TypedQuery<Admin> query = entityManager.createQuery(
@@ -40,7 +40,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email");
         }
 
-        Admin admin = admins.get(0);
+        Admin admin = admins.getFirst();
         if (!admin.getPassword().equals(loginRequest.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
         }
@@ -49,7 +49,7 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponse(token, "ADMIN", admin.getEmail()));
     }
 
-    // ===================== AGENT LOGIN =====================
+
     @PostMapping("/agent/login")
     public ResponseEntity<?> agentLogin(@RequestBody LoginRequest loginRequest) {
         TypedQuery<Agent> query = entityManager.createQuery(
@@ -61,7 +61,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email");
         }
 
-        Agent agent = agents.get(0);
+        Agent agent = agents.getFirst();
         if (!agent.getPassword().equals(loginRequest.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
         }
@@ -70,7 +70,7 @@ public class AuthController {
         return ResponseEntity.ok(new LoginResponse(token, "AGENT", agent.getEmail()));
     }
 
-    // ===================== CUSTOMER LOGIN =====================
+
     @PostMapping("/customer/login")
     public ResponseEntity<?> customerLogin(@RequestBody LoginRequest loginRequest) {
         TypedQuery<Customer> query = entityManager.createQuery(
@@ -82,7 +82,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email");
         }
 
-        Customer customer = customers.get(0);
+        Customer customer = customers.getFirst();
         if (!customer.getPassword().equals(loginRequest.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
         }

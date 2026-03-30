@@ -1,14 +1,21 @@
 package com.internship.InsuranceManagement.rest;
 
+import java.util.List;
+
+import com.internship.InsuranceManagement.dto.CustomerDTO;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.internship.InsuranceManagement.entity.Customer;
 import com.internship.InsuranceManagement.entity.Policy;
 import com.internship.InsuranceManagement.service.interfaces.CustomerService;
 import com.internship.InsuranceManagement.service.interfaces.PolicyService;
-import jakarta.transaction.Transactional;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -23,12 +30,20 @@ public class CustomerRestController {
 
     @GetMapping("/")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-    public List<Customer> getCustomers() {
-        return customerService.findAll();
+    public List<CustomerDTO> getCustomers() {
+        List<Customer> customers = customerService.findAll();
+        return customers.stream()
+                .map(c -> new CustomerDTO(
+                        c.getCustomerId(),
+                        c.getUsername(),
+                        c.getEmail(),
+                        c.getAddress(),
+                        c.getDateOfBirth()
+                ))
+                .toList();
     }
 
     @PostMapping("/")
-    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     public Customer postCustomer(@RequestBody Customer customer) {
         customer.setCustomerId(0);
         return customerService.save(customer);

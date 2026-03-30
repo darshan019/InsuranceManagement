@@ -9,6 +9,7 @@ public interface PaymentService {
     Payment save(Payment payment);
     Payment findById(int id);
     void deleteById(int id);
+    List<Payment> findByCustomerId(int customerId);
 
 
 }
