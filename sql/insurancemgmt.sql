@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS `InsuranceManagement_DB`;
 USE `InsuranceManagement_DB`;
 
+
 DROP TABLE IF EXISTS Payment;
 DROP TABLE IF EXISTS Claim;
 DROP TABLE IF EXISTS Policy;
@@ -35,7 +36,8 @@ CREATE TABLE Agent (
   agent_id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
-  phone VARCHAR(50)
+  phone VARCHAR(50),
+  password VARCHAR(255) NOT NULL
 );
 
 -- Insurance types
@@ -135,16 +137,20 @@ INSERT INTO Customer (username, email, password, address, date_of_birth) VALUES
 ('rahul_p', 'rahul@example.com', 'rahul789', 'Hyderabad, TS', '1988-12-05');
 
 -- Agents
-INSERT INTO Agent (name, email, phone) VALUES
-('Ravi Kumar', 'ravi.agent@example.com', '9876543210'),
-('Priya Sharma', 'priya.agent@example.com', '9123456789');
+INSERT INTO Agent (name, email, phone,password) VALUES
+('Ravi Kumar', 'ravi.agent@example.com', '9876543210','agent1'),
+('Priya Sharma', 'priya.agent@example.com', '9123456789','agent2');
 
 -- Policy templates (catalog)
 INSERT INTO Policy_template (agent_id, type_id, category_id, template_name, premium_amount, coverage_amount) VALUES
 (1, 1, 1, 'Motor – 2 Wheeler', 1000, 500000),
+(1, 1, 2, 'Motor - 3 Wheeler',1500,750000),
 (1, 1, 3, 'Motor – 4 Wheeler', 2500, 1200000),
+(1, 3, 7, 'Life – Basic', 4800, 10000000),
+(2, 2, 4, 'Property – Small', 10000, 5000000),
 (2, 2, 5, 'Property – Medium', 20000, 15000000),
-(1, 3, 8, 'Life – Premium', 9600, 20000000);
+(2, 2, 6, 'Property – Large', 40000, 22000000),
+(2, 3, 8, 'Life – Premium', 9600, 20000000);
 
 -- Customer policies (purchases linked to templates)
 INSERT INTO Policy (customer_id, template_id, policy_number, start_date, end_date, status) VALUES
@@ -178,3 +184,18 @@ SELECT * FROM Policy_template;
 SELECT * FROM Policy;
 SELECT * FROM Payment;
 SELECT * FROM Claim;
+select * from Customer;
+
+
+
+
+
+
+select * from admin;
+select * from agent;
+select* from customer;
+select* from policy_template;
+select* from category;
+select* from payment;
+update payment set payment_date="2026-03-23 15:25:58" where payment_id=2;
+select* from claim;

@@ -18,7 +18,7 @@ public class Admin {
     @Column(nullable = false)
     private String password;
 
-    // getters and setters
+
 
 
     public Admin() {
