@@ -1,5 +1,6 @@
 package com.internship.InsuranceManagement.rest;
 
+import com.internship.InsuranceManagement.dto.AgentDTO;
 import com.internship.InsuranceManagement.entity.Agent;
 import com.internship.InsuranceManagement.entity.Customer;
 import com.internship.InsuranceManagement.dto.CustomerDTO;
@@ -23,8 +24,17 @@ import java.util.List;
 
         @GetMapping("/")
         @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
-        public List<Agent> getAgents() {
-            return agentService.findAll();
+        public List<AgentDTO> getAgents() {
+            List<Agent> agents = agentService.findAll();
+            return agents.stream()
+                    .map(a -> new AgentDTO(
+                            a.getAgentId(),
+                            a.getName(),
+                            a.getEmail(),
+                            a.getPhone()
+
+                    ))
+                    .toList();
         }
 
         @GetMapping("/{agentId}")

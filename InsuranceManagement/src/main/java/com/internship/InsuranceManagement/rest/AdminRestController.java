@@ -25,5 +25,11 @@ public class AdminRestController {
         return adminService.findAll();
     }
 
+    @PatchMapping("/admins/{adminId}/{claimId}/approve")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Claim approveClaim(@PathVariable int claimId,@PathVariable int adminId) throws Exception {
+        return adminService.approveClaimById(claimId,adminId);
+    }
+
 
 }

@@ -56,7 +56,7 @@ public class AdminDAOImpl implements AdminDAO {
         String q = "UPDATE Claim c SET c.status = :status, c.approvedBy = :admin, c.approvedAt = CURRENT_TIMESTAMP WHERE c.claimId = :claimId";
         entityManager.createQuery(q)
                 .setParameter("status", "Approved")
-                .setParameter("admin", admin)   // pass the entity, not the ID
+                .setParameter("admin", admin)
                 .setParameter("claimId", claimId)
                 .executeUpdate();
 
