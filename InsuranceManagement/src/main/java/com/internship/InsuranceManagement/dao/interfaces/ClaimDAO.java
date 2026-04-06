@@ -9,4 +9,6 @@ public interface ClaimDAO {
     Claim findById(int id);
     Claim save(Claim claim);
     void deleteById(int id);
+
+    List<Claim> findNotApproved();
 }

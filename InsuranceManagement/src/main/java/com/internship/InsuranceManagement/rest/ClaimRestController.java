@@ -21,6 +21,14 @@ public class ClaimRestController {
         this.claimService = claimService;
     }
 
+    @GetMapping("/claims/pending")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
+    public List<ClaimDTO> getNotApprovedClaims() {
+        return claimService.findNotApproved().stream()
+                .map(DTOMapper::toClaimDTO)
+                .toList();
+    }
+
     @GetMapping("/claims")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public List<ClaimDTO> getClaims() {

@@ -18,6 +18,11 @@ public class ClaimDAOImpl implements ClaimDAO {
         this.entityManager = entityManager;
     }
 
+    public List<Claim> findNotApproved() {
+        TypedQuery<Claim> query = entityManager.createQuery("from Claim c where c.status != 'approved'", Claim.class);
+        return query.getResultList();
+    }
+
     public List<Claim> findAll() {
         TypedQuery<Claim> query = entityManager.createQuery("from Claim", Claim.class);
         return query.getResultList();

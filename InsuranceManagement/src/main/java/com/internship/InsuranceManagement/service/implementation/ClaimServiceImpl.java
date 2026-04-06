@@ -18,6 +18,11 @@ public class ClaimServiceImpl implements ClaimService {
         this.claimDAO = ClaimDAO;
     }
 
+
+    @Override
+    public List<Claim> findNotApproved() {
+        return claimDAO.findNotApproved();
+    }
     @Override
     public List<Claim> findAll() {
         return claimDAO.findAll();

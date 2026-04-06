@@ -13,8 +13,6 @@ public class ErrorResponse {
         this.timestamp = LocalDateTime.now();
     }
 
-    // getters and setters
-
 
     public String getMessage() {
         return message;

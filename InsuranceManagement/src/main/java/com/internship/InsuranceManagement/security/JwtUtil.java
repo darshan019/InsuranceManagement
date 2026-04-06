@@ -26,7 +26,7 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    // Generate token with role
+
     public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
@@ -43,17 +43,17 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Extract username from token
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Extract role from token
+
     public String extractRole(String token) {
         return extractAllClaims(token).get("role", String.class);
     }
 
-    // Extract expiration date
+
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -71,12 +71,12 @@ public class JwtUtil {
                 .getPayload();
     }
 
-    // Check if token is expired
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    // Validate token
+
     public boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
         return (extractedUsername.equals(username) && !isTokenExpired(token));

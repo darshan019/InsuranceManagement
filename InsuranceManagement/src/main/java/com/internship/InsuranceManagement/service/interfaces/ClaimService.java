@@ -2,6 +2,7 @@ package com.internship.InsuranceManagement.service.interfaces;
 
 import com.internship.InsuranceManagement.entity.Claim;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ClaimService {
@@ -9,4 +10,5 @@ public interface ClaimService {
     Claim save(Claim claim);
     Claim findById(int id);
     void deleteById(int id);
+    List<Claim> findNotApproved();
 }
