@@ -33,7 +33,7 @@ public class Payment {
     @Column(nullable = false)
     private String status;
 
-    // getters and setters
+
 
 
     public Payment() {

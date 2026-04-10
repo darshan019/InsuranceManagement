@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS Insurance_type;
 DROP TABLE IF EXISTS Customer;
 DROP TABLE IF EXISTS Admin;
 DROP TABLE IF EXISTS Agent;
+DROP TABLE IF EXISTS login_audit;
 
 
 -- Customer table
@@ -111,6 +112,15 @@ CREATE TABLE Payment (
   FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
 );
 
+CREATE TABLE login_audit (
+    audit_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_type VARCHAR(20) NOT NULL,
+    user_id INT NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    action VARCHAR(20) NOT NULL,
+    action_time DATETIME NOT NULL
+);
+
 -- Seed data
 
 -- Insurance types
@@ -199,3 +209,5 @@ select* from category;
 select* from payment;
 update payment set payment_date="2026-03-23 15:25:58" where payment_id=2;
 select* from claim;
+select* from login_audit;
+SELECT * FROM login_audit where user_type ='ADMIN'ORDER BY action_time ASC ;
