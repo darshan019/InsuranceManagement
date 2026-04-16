@@ -12,6 +12,7 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,16 +24,17 @@ public class AuthController {
     private final EntityManager entityManager;
     private final JwtUtil jwtUtil;
     private final LoginAuditService loginAuditService;
-
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
     public AuthController(EntityManager entityManager,
                           JwtUtil jwtUtil,
-                          LoginAuditService loginAuditService) {
+                          LoginAuditService loginAuditService,  PasswordEncoder passwordEncoder) {
         this.entityManager = entityManager;
         this.jwtUtil = jwtUtil;
         this.loginAuditService = loginAuditService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -48,9 +50,14 @@ public class AuthController {
         }
 
         Admin admin = admins.getFirst();
-        if (!admin.getPassword().equals(loginRequest.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+        if (!passwordEncoder.matches(
+                loginRequest.getPassword(),
+                admin.getPassword())) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid password");
         }
+
 
         loginAuditService.logEvent(
                 "ADMIN",
@@ -78,9 +85,14 @@ public class AuthController {
         }
 
         Agent agent = agents.getFirst();
-        if (!agent.getPassword().equals(loginRequest.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+        if (!passwordEncoder.matches(
+                loginRequest.getPassword(),
+                agent.getPassword())) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid password");
         }
+
 
         loginAuditService.logEvent(
                 "AGENT",
@@ -108,9 +120,14 @@ public class AuthController {
         }
 
         Customer customer = customers.getFirst();
-        if (!customer.getPassword().equals(loginRequest.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+        if (!passwordEncoder.matches(
+                loginRequest.getPassword(),
+                customer.getPassword())) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid password");
         }
+
         loginAuditService.logEvent(
                 "CUSTOMER",
                 customer.getCustomerId(),

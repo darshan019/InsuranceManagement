@@ -3,6 +3,7 @@ package com.internship.InsuranceManagement.dao.implementation;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -86,5 +87,26 @@ public class PolicyDAOImpl implements PolicyDAO {
         }
         entityManager.merge(policy);
         return policy;
+    }
+
+    @Transactional
+    @Override
+    public void cancelPolicyByPolicyNumber(String policyNumber, int customerId) {
+
+        String jpql = """
+        UPDATE Policy p
+        SET p.status = 'CANCELLED'
+        WHERE p.policyNumber = :policyNumber
+        AND p.customer.customerId = :customerId
+    """;
+
+        int updated = entityManager.createQuery(jpql)
+                .setParameter("policyNumber", policyNumber)
+                .setParameter("customerId", customerId)
+                .executeUpdate();
+
+        if (updated == 0) {
+            throw new RuntimeException("Policy not found or not owned by customer");
+        }
     }
 }

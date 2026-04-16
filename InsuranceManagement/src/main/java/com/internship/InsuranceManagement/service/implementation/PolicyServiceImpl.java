@@ -10,7 +10,6 @@ import com.internship.InsuranceManagement.service.interfaces.PolicyService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +19,9 @@ public class PolicyServiceImpl implements PolicyService {
     private final PolicyDAO policyDAO;
     private final CustomerDAO customerDAO;
     private final PolicyTemplateDAO policyTemplateDAO;
+
+
+
 
     @Autowired
     public PolicyServiceImpl(PolicyDAO policyDAO, CustomerDAO customerDAO, PolicyTemplateDAO policyTemplateDAO) {
@@ -81,5 +83,10 @@ public class PolicyServiceImpl implements PolicyService {
     @Transactional
     public Policy checkPolicyPayment(int policyId) {
         return policyDAO.checkPolicyPayment(policyId);
+    }
+
+    @Override
+    public void cancelPolicy(String policyNumber, int customerId) {
+        policyDAO.cancelPolicyByPolicyNumber(policyNumber, customerId);
     }
 }

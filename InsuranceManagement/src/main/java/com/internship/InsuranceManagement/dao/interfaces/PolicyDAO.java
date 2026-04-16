@@ -1,6 +1,7 @@
 package com.internship.InsuranceManagement.dao.interfaces;
 
 import com.internship.InsuranceManagement.entity.Policy;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -17,4 +18,7 @@ public interface PolicyDAO {
     List<Policy> findPoliciesByCustomerId(int customerId);
 
     Policy checkPolicyPayment(int policyId);
+
+    @Transactional
+    void cancelPolicyByPolicyNumber(String policyNumber, int customerId);
 }

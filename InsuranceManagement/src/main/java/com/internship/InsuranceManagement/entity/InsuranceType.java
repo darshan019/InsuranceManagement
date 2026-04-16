@@ -14,7 +14,7 @@ public class InsuranceType {
 
     private String description;
 
-    // getters and setters
+
 
 
     public InsuranceType() {

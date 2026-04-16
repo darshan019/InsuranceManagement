@@ -5,6 +5,7 @@ import com.internship.InsuranceManagement.dto.PolicyDTO;
 import com.internship.InsuranceManagement.entity.Policy;
 import com.internship.InsuranceManagement.service.interfaces.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,4 +63,15 @@ public class PolicyRestController {
     public void deletePolicy(@PathVariable int policyId) {
         policyService.deleteById(policyId);
     }
+
+    @PutMapping("/customer/{customerId}/policies/cancel/{policyNumber}")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<String> cancelPolicy(
+            @PathVariable int customerId,
+            @PathVariable String policyNumber) {
+
+        policyService.cancelPolicy(policyNumber, customerId);
+        return ResponseEntity.ok("Policy cancelled successfully");
+    }
+
 }
