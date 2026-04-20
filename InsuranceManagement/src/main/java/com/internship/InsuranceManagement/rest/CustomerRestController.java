@@ -28,9 +28,7 @@ public class CustomerRestController {
         this.jwtUtil = jwtUtil;
     }
 
-    /* -------------------------------------------------
-       ADMIN / AGENT : VIEW ALL CUSTOMERS
-       ------------------------------------------------- */
+
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public List<CustomerDTO> getCustomers() {
@@ -46,29 +44,16 @@ public class CustomerRestController {
                 .toList();
     }
 
-    /* -------------------------------------------------
-       CUSTOMER SIGN UP (ONLY CUSTOMER)
-       ------------------------------------------------- */
-    @PostMapping
+
+    @PostMapping("/")
     public Customer registerCustomer(@RequestBody Customer customer) {
         customer.setCustomerId(0); // ensure insert
         return customerService.save(customer);
     }
 
-    /* -------------------------------------------------
-       ADMIN : BUY POLICY FOR ANY CUSTOMER
-       ------------------------------------------------- */
-    @PostMapping("/admin/{customerId}/buyPolicy/{policyTemplateId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Policy adminBuyPolicy(@PathVariable int customerId,
-                                 @PathVariable int policyTemplateId) {
 
-        return policyService.buyPolicy(customerId, policyTemplateId);
-    }
 
-    /* -------------------------------------------------
-       AGENT : BUY POLICY FOR ANY CUSTOMER
-       ------------------------------------------------- */
+
     @PostMapping("/agent/{customerId}/buyPolicy/{policyTemplateId}")
     @PreAuthorize("hasRole('AGENT')")
     public Policy agentBuyPolicy(@PathVariable int customerId,
@@ -77,9 +62,7 @@ public class CustomerRestController {
         return policyService.buyPolicy(customerId, policyTemplateId);
     }
 
-    /* -------------------------------------------------
-       CUSTOMER : BUY POLICY (ONLY FOR SELF – SECURE ✅)
-       ------------------------------------------------- */
+
     @PostMapping("/buyPolicy/{policyTemplateId}")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Policy customerBuyPolicy(@PathVariable int policyTemplateId,
@@ -96,9 +79,7 @@ public class CustomerRestController {
         );
     }
 
-    /* -------------------------------------------------
-       ADMIN : DELETE CUSTOMER
-       ------------------------------------------------- */
+
     @DeleteMapping("/{customerId}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteCustomer(@PathVariable int customerId) {
