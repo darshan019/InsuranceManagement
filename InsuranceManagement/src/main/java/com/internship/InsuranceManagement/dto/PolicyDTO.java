@@ -2,6 +2,7 @@ package com.internship.InsuranceManagement.dto;
 
 import java.time.LocalDateTime;
 import lombok.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,4 +14,5 @@ public class PolicyDTO {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String status;
+    private LocalDateTime nextPremiumDate;
 }

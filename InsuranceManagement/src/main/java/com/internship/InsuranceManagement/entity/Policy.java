@@ -30,7 +30,9 @@ public class Policy {
     @Column(nullable = false)
     private String status;
 
-    // getters and setters...
+    // NEW: when the next premium is due. Null means no premium has been paid yet.
+    @Column(name = "next_premium_date")
+    private LocalDateTime nextPremiumDate;
 
 
     public int getPolicyId() {
@@ -87,5 +89,13 @@ public class Policy {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDateTime getNextPremiumDate() {
+        return nextPremiumDate;
+    }
+
+    public void setNextPremiumDate(LocalDateTime nextPremiumDate) {
+        this.nextPremiumDate = nextPremiumDate;
     }
 }

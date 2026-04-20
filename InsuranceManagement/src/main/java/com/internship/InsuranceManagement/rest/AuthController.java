@@ -67,7 +67,7 @@ public class AuthController {
         );
 
         String token = jwtUtil.generateToken(admin.getEmail(), "ADMIN");
-        return ResponseEntity.ok(new LoginResponse(token, "ADMIN", admin.getEmail()));
+        return ResponseEntity.ok(new LoginResponse(token, "ADMIN", admin.getEmail(), admin.getAdminId()));
     }
 
 
@@ -102,7 +102,7 @@ public class AuthController {
         );
 
         String token = jwtUtil.generateToken(agent.getEmail(), "AGENT");
-        return ResponseEntity.ok(new LoginResponse(token, "AGENT", agent.getEmail()));
+        return ResponseEntity.ok(new LoginResponse(token, "AGENT", agent.getEmail(), agent.getAgentId()));
     }
 
 
@@ -136,7 +136,7 @@ public class AuthController {
         );
 
         String token = jwtUtil.generateToken(customer.getEmail(), "CUSTOMER");
-        return ResponseEntity.ok(new LoginResponse(token, "CUSTOMER", customer.getEmail()));
+        return ResponseEntity.ok(new LoginResponse(token, "CUSTOMER", customer.getEmail(), customer.getCustomerId()));
     }
 
 

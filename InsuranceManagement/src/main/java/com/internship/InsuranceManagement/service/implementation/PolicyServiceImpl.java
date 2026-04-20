@@ -20,9 +20,6 @@ public class PolicyServiceImpl implements PolicyService {
     private final CustomerDAO customerDAO;
     private final PolicyTemplateDAO policyTemplateDAO;
 
-
-
-
     @Autowired
     public PolicyServiceImpl(PolicyDAO policyDAO, CustomerDAO customerDAO, PolicyTemplateDAO policyTemplateDAO) {
         this.policyDAO = policyDAO;
@@ -65,19 +62,23 @@ public class PolicyServiceImpl implements PolicyService {
     @Transactional
     public Policy buyPolicy(int customerId, int templateId) {
         Customer customer = customerDAO.findById(customerId);
-
         PolicyTemplate template = policyTemplateDAO.findById(templateId);
 
         Policy policy = new Policy();
         policy.setCustomer(customer);
         policy.setTemplate(template);
-        policy.setPolicyNumber("POL-" + template.getInsuranceType().getTypeName().toUpperCase() + "-" + System.currentTimeMillis());
+        policy.setPolicyNumber(
+                "POL-" + template.getInsuranceType().getTypeName().toUpperCase()
+                        + "-" + System.currentTimeMillis());
         policy.setStartDate(LocalDateTime.now());
         policy.setEndDate(LocalDateTime.now().plusYears(1));
-        policy.setStatus("Active");
+        // Policy is PENDING until the first premium is paid.
+        policy.setStatus("PENDING");
+        // nextPremiumDate left null on purpose - set when first payment is made.
+        policy.setNextPremiumDate(null);
 
         return policyDAO.save(policy);
-     }
+    }
 
     @Override
     @Transactional

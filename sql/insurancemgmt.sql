@@ -189,6 +189,33 @@ UPDATE Claim
 SET approved_by = 1, approved_at = NOW(), status = 'Approved'
 WHERE claim_id = 2;
 
+
+-- 1. Add the new column (will fail if already exists — that's fine, skip it).
+ALTER TABLE Policy
+    ADD COLUMN next_premium_date DATETIME NULL;
+
+-- 2. For existing policies that are currently "Active" but have never paid,
+--    reset them to PENDING so the new flow applies consistently.
+--    SKIP this block if you want to leave existing test data alone.
+SET SQL_SAFE_UPDATES = 0;
+UPDATE Policy p
+LEFT JOIN Payment pay ON pay.policy_id = p.policy_id
+SET p.status = 'PENDING'
+WHERE pay.payment_id IS NULL
+  AND UPPER(p.status) NOT LIKE '%CANCEL%';
+  SET SQL_SAFE_UPDATES = 1;
+
+-- 3. For existing policies that DO have at least one payment,
+--    set their next_premium_date to 1 year after their most recent payment.
+UPDATE Policy p
+JOIN (
+    SELECT policy_id, MAX(payment_date) AS last_paid
+    FROM Payment
+    GROUP BY policy_id
+) last_pay ON last_pay.policy_id = p.policy_id
+SET p.next_premium_date = DATE_ADD(last_pay.last_paid, INTERVAL 1 YEAR),
+    p.status = 'ACTIVE'
+WHERE UPPER(p.status) NOT LIKE '%CANCEL%';
 -- Check data
 SELECT * FROM Policy_template;
 SELECT * FROM Policy;
@@ -207,6 +234,7 @@ select* from customer;
 select* from policy_template;
 select* from category;
 select* from payment;
+
 update payment set payment_date="2026-03-23 15:25:58" where payment_id=2;
 select* from claim;
 select* from login_audit;

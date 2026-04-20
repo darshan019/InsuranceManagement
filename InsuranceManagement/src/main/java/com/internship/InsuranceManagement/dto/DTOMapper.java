@@ -2,6 +2,8 @@ package com.internship.InsuranceManagement.dto;
 
 import com.internship.InsuranceManagement.entity.*;
 
+import java.time.LocalDateTime;
+
 public class DTOMapper {
 
     public static CustomerDTO toCustomerDTO(Customer c) {
@@ -32,6 +34,28 @@ public class DTOMapper {
         );
     }
 
+    /**
+     * Compute the effective status for display.
+     *   - If stored status is CANCELLED, keep it.
+     *   - If stored status is ACTIVE but the next-premium date has passed => DUE.
+     *   - Otherwise return the stored status.
+     */
+    private static String computeEffectiveStatus(Policy p) {
+        String stored = p.getStatus();
+        if (stored == null) return "PENDING";
+
+        String s = stored.toUpperCase();
+        if (s.contains("CANCEL")) {
+            return stored;
+        }
+        if (s.contains("ACTIVE")
+                && p.getNextPremiumDate() != null
+                && p.getNextPremiumDate().isBefore(LocalDateTime.now())) {
+            return "DUE";
+        }
+        return stored;
+    }
+
     public static PolicyDTO toPolicyDTO(Policy p) {
         if (p == null) return null;
         return new PolicyDTO(
@@ -41,7 +65,8 @@ public class DTOMapper {
                 p.getPolicyNumber(),
                 p.getStartDate(),
                 p.getEndDate(),
-                p.getStatus()
+                computeEffectiveStatus(p),
+                p.getNextPremiumDate()
         );
     }
 
