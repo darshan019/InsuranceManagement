@@ -1,0 +1,441 @@
+/* Basic reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* ====== Navbar ====== */
+.navbar {
+  background-color: #2c5282;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.navbar-links a {
+  color: white;
+  margin-right: 15px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.navbar-links a:hover {
+  text-decoration: underline;
+}
+
+.navbar-user {
+  font-size: 13px;
+}
+
+.logout-btn {
+  background-color: #c53030;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 13px;
+}
+
+.logout-btn:hover {
+  background-color: #9b2c2c;
+}
+
+/* ====== Main container ====== */
+.container {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.container h1 {
+  margin-top: 0;
+  border-bottom: 2px solid #2c5282;
+  padding-bottom: 8px;
+  color: #2c5282;
+}
+
+.container h3 {
+  color: #2c5282;
+  margin-top: 25px;
+}
+
+/* ====== Login page ====== */
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e2e8f0;
+}
+
+.login-box {
+  background-color: white;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-top: 0;
+  color: #2c5282;
+}
+
+.login-box p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.role-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.role-btn {
+  background-color: #2c5282;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.role-btn:hover {
+  background-color: #1a365d;
+}
+
+.role-btn.agent {
+  background-color: #2f855a;
+}
+
+.role-btn.agent:hover {
+  background-color: #22543d;
+}
+
+.role-btn.customer {
+  background-color: #b7791f;
+}
+
+.role-btn.customer:hover {
+  background-color: #975a16;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: #2c5282;
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* ====== Forms ====== */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2c5282;
+}
+
+.submit-btn {
+  background-color: #2c5282;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.submit-btn:hover {
+  background-color: #1a365d;
+}
+
+.submit-btn:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* ====== Messages ====== */
+.error-msg {
+  background-color: #fed7d7;
+  color: #9b2c2c;
+  padding: 10px;
+  border: 1px solid #feb2b2;
+  border-radius: 3px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.success-msg {
+  background-color: #c6f6d5;
+  color: #22543d;
+  padding: 10px;
+  border: 1px solid #9ae6b4;
+  border-radius: 3px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.info-msg {
+  background-color: #e2e8f0;
+  color: #2d3748;
+  padding: 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 3px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+/* ====== Tables ====== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #edf2f7;
+  color: #2d3748;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* ====== Small buttons ====== */
+.btn {
+  border: none;
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.btn-primary {
+  background-color: #2c5282;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1a365d;
+}
+
+.btn-success {
+  background-color: #2f855a;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #22543d;
+}
+
+.btn-danger {
+  background-color: #c53030;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #9b2c2c;
+}
+
+.btn-warning {
+  background-color: #b7791f;
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #975a16;
+}
+
+/* ====== Dashboard cards ====== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.dashboard-card {
+  background-color: #edf2f7;
+  padding: 20px;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.dashboard-card h3 {
+  margin: 0 0 10px 0;
+  color: #2c5282;
+}
+
+.dashboard-card .count {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2d3748;
+}
+
+.dashboard-card a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #2c5282;
+  font-size: 13px;
+}
+
+/* ====== Status badges ====== */
+.badge {
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.badge-active {
+  background-color: #2f855a;
+}
+
+.badge-pending {
+  background-color: #b7791f;
+}
+
+.badge-approved {
+  background-color: #2f855a;
+}
+
+.badge-cancelled {
+  background-color: #718096;
+}
+
+.badge-rejected {
+  background-color: #c53030;
+}
+
+/* ====== Utility ====== */
+.text-center {
+  text-align: center;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.flex-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.register-link a {
+  color: #2c5282;
+}
+
+/* ====== Modal ====== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background-color: white;
+  padding: 25px;
+  border-radius: 5px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-box h3 {
+  margin-top: 0;
+  color: #2c5282;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+
+/* button {
+  margin: auto;
+} */
