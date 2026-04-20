@@ -40,4 +40,14 @@ public class CustomerDAOImpl implements CustomerDAO {
         Customer customer = entityManager.find(Customer.class, id);
         entityManager.remove(customer);
     }
+
+    @Override
+    public Customer findByEmail(String email) {
+        return entityManager.createQuery(
+                        "SELECT c FROM Customer c WHERE c.email = :email",
+                        Customer.class
+                )
+                .setParameter("email", email)
+                .getSingleResult();
+    }
 }

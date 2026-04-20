@@ -3,36 +3,39 @@ package com.internship.InsuranceManagement.rest;
 import java.util.List;
 
 import com.internship.InsuranceManagement.dto.CustomerDTO;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.internship.InsuranceManagement.entity.Customer;
 import com.internship.InsuranceManagement.entity.Policy;
+import com.internship.InsuranceManagement.security.JwtUtil;
 import com.internship.InsuranceManagement.service.interfaces.CustomerService;
 import com.internship.InsuranceManagement.service.interfaces.PolicyService;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerRestController {
-    private final PolicyService PolicyService;
-    private final CustomerService customerService;
 
-    public CustomerRestController(PolicyService policyService, CustomerService customerService) {
-        PolicyService = policyService;
+    private final PolicyService policyService;
+    private final CustomerService customerService;
+    private final JwtUtil jwtUtil;
+
+    public CustomerRestController(PolicyService policyService,
+                                  CustomerService customerService,
+                                  JwtUtil jwtUtil) {
+        this.policyService = policyService;
         this.customerService = customerService;
+        this.jwtUtil = jwtUtil;
     }
 
-    @GetMapping("/")
+    /* -------------------------------------------------
+       ADMIN / AGENT : VIEW ALL CUSTOMERS
+       ------------------------------------------------- */
+    @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public List<CustomerDTO> getCustomers() {
-        List<Customer> customers = customerService.findAll();
-        return customers.stream()
+        return customerService.findAll()
+                .stream()
                 .map(c -> new CustomerDTO(
                         c.getCustomerId(),
                         c.getUsername(),
@@ -43,22 +46,62 @@ public class CustomerRestController {
                 .toList();
     }
 
-    @PostMapping("/")
-    public Customer postCustomer(@RequestBody Customer customer) {
-        customer.setCustomerId(0);
+    /* -------------------------------------------------
+       CUSTOMER SIGN UP (ONLY CUSTOMER)
+       ------------------------------------------------- */
+    @PostMapping
+    public Customer registerCustomer(@RequestBody Customer customer) {
+        customer.setCustomerId(0); // ensure insert
         return customerService.save(customer);
     }
 
-    @PostMapping("/{customerId}/buyPolicy/{policyTemplateId}")
-    @PreAuthorize("hasAnyRole('CUSTOMER', 'AGENT')")
-    public Policy buyPolicy(@PathVariable int customerId, @PathVariable int policyTemplateId) {
-        return PolicyService.buyPolicy(customerId, policyTemplateId);
+    /* -------------------------------------------------
+       ADMIN : BUY POLICY FOR ANY CUSTOMER
+       ------------------------------------------------- */
+    @PostMapping("/admin/{customerId}/buyPolicy/{policyTemplateId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Policy adminBuyPolicy(@PathVariable int customerId,
+                                 @PathVariable int policyTemplateId) {
+
+        return policyService.buyPolicy(customerId, policyTemplateId);
     }
 
+    /* -------------------------------------------------
+       AGENT : BUY POLICY FOR ANY CUSTOMER
+       ------------------------------------------------- */
+    @PostMapping("/agent/{customerId}/buyPolicy/{policyTemplateId}")
+    @PreAuthorize("hasRole('AGENT')")
+    public Policy agentBuyPolicy(@PathVariable int customerId,
+                                 @PathVariable int policyTemplateId) {
+
+        return policyService.buyPolicy(customerId, policyTemplateId);
+    }
+
+    /* -------------------------------------------------
+       CUSTOMER : BUY POLICY (ONLY FOR SELF – SECURE ✅)
+       ------------------------------------------------- */
+    @PostMapping("/buyPolicy/{policyTemplateId}")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public Policy customerBuyPolicy(@PathVariable int policyTemplateId,
+                                    @RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.substring(7);
+        String email = jwtUtil.extractUsername(token);
+
+        Customer customer = customerService.findByEmail(email);
+
+        return policyService.buyPolicy(
+                customer.getCustomerId(),
+                policyTemplateId
+        );
+    }
+
+    /* -------------------------------------------------
+       ADMIN : DELETE CUSTOMER
+       ------------------------------------------------- */
     @DeleteMapping("/{customerId}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteCustomer(@PathVariable int customerId) {
         customerService.deleteById(customerId);
     }
-
 }

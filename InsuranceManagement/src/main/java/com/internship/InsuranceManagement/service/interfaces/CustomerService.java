@@ -9,4 +9,5 @@ public interface CustomerService {
     Customer save(Customer customer);
     Customer findById(int id);
     void deleteById(int id);
+    Customer findByEmail(String email);
 }

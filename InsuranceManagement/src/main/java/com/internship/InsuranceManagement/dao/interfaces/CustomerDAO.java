@@ -9,4 +9,6 @@ public interface CustomerDAO {
     Customer findById(int id);
     Customer save(Customer customer);
     void deleteById(int id);
+
+    Customer findByEmail(String email);
 }
