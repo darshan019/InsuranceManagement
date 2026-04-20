@@ -70,7 +70,7 @@ public class PolicyDAOImpl implements PolicyDAO {
         Policy policy = entityManager.find(Policy.class, policyId);
 
         if (!payments.isEmpty()) {
-            Payment Payment = payments.getFirst();
+            Payment Payment = payments.get(0);
             LocalDate lastPaymentDate = Payment.getPaymentDate().toLocalDate();
 
             if (!lastPaymentDate.plusDays(365).isAfter(LocalDate.now())) {

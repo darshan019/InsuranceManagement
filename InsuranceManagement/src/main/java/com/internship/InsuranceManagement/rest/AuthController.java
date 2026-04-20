@@ -49,14 +49,14 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email");
         }
 
-        Admin admin = admins.getFirst();
-        if (!passwordEncoder.matches(
-                loginRequest.getPassword(),
-                admin.getPassword())) {
+        Admin admin = admins.get(0);
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        if (!admin.getPassword().equals(loginRequest.getPassword())) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
                     .body("Invalid password");
         }
+
 
 
         loginAuditService.logEvent(
@@ -84,14 +84,14 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email");
         }
 
-        Agent agent = agents.getFirst();
-        if (!passwordEncoder.matches(
-                loginRequest.getPassword(),
-                agent.getPassword())) {
+        Agent agent = agents.get(0);
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        if (!agent.getPassword().equals(loginRequest.getPassword())) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
                     .body("Invalid password");
         }
+
 
 
         loginAuditService.logEvent(
@@ -119,7 +119,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email");
         }
 
-        Customer customer = customers.getFirst();
+        Customer customer = customers.get(0);
         if (!passwordEncoder.matches(
                 loginRequest.getPassword(),
                 customer.getPassword())) {
