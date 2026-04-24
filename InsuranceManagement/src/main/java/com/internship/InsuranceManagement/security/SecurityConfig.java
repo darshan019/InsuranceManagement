@@ -41,6 +41,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(List.of(
+                "http://localhost:5173",
                 "http://localhost:5174",
                 "http://localhost:3000"
         ));

@@ -11,4 +11,7 @@ public interface ClaimDAO {
     void deleteById(int id);
 
     List<Claim> findNotApproved();
+
+    // Returns true if a claim already exists for the given policy
+    boolean existsByPolicyId(int policyId);
 }

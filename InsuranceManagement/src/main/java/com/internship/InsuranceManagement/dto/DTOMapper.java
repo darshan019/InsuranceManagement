@@ -34,12 +34,6 @@ public class DTOMapper {
         );
     }
 
-    /**
-     * Compute the effective status for display.
-     *   - If stored status is CANCELLED, keep it.
-     *   - If stored status is ACTIVE but the next-premium date has passed => DUE.
-     *   - Otherwise return the stored status.
-     */
     private static String computeEffectiveStatus(Policy p) {
         String stored = p.getStatus();
         if (stored == null) return "PENDING";
@@ -80,7 +74,8 @@ public class DTOMapper {
                 c.getClaimAmount(),
                 c.getStatus(),
                 toAdminDTO(c.getApprovedBy()),
-                c.getApprovedAt()
+                c.getApprovedAt(),
+                c.getRemark()
         );
     }
 

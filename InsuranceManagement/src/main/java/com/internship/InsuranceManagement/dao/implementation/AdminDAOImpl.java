@@ -1,7 +1,6 @@
 package com.internship.InsuranceManagement.dao.implementation;
 
 import com.internship.InsuranceManagement.dao.interfaces.AdminDAO;
-import com.internship.InsuranceManagement.dao.interfaces.ClaimDAO;
 import com.internship.InsuranceManagement.entity.Admin;
 import com.internship.InsuranceManagement.entity.Claim;
 import jakarta.persistence.EntityManager;
@@ -16,6 +15,7 @@ import java.util.List;
 public class AdminDAOImpl implements AdminDAO {
 
     private final EntityManager entityManager;
+
     @Autowired
     public AdminDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -41,22 +41,42 @@ public class AdminDAOImpl implements AdminDAO {
     public void deleteById(int id) {
         Admin admin = entityManager.find(Admin.class, id);
         entityManager.remove(admin);
-
     }
 
     @Override
     @Transactional
     public Claim approveClaimById(int claimId, int adminId) throws Exception {
         Admin admin = entityManager.find(Admin.class, adminId);
-
         if (admin == null) {
             throw new Exception("Admin does not exist");
         }
 
-        String q = "UPDATE Claim c SET c.status = :status, c.approvedBy = :admin, c.approvedAt = CURRENT_TIMESTAMP WHERE c.claimId = :claimId";
+        String q = "UPDATE Claim c SET c.status = :status, c.approvedBy = :admin, "
+                + "c.approvedAt = CURRENT_TIMESTAMP WHERE c.claimId = :claimId";
         entityManager.createQuery(q)
                 .setParameter("status", "Approved")
                 .setParameter("admin", admin)
+                .setParameter("claimId", claimId)
+                .executeUpdate();
+
+        return entityManager.find(Claim.class, claimId);
+    }
+
+    @Override
+    @Transactional
+    public Claim rejectClaimById(int claimId, int adminId, String remark) throws Exception {
+        Admin admin = entityManager.find(Admin.class, adminId);
+        if (admin == null) {
+            throw new Exception("Admin does not exist");
+        }
+
+        String q = "UPDATE Claim c SET c.status = :status, c.approvedBy = :admin, "
+                + "c.approvedAt = CURRENT_TIMESTAMP, c.remark = :remark "
+                + "WHERE c.claimId = :claimId";
+        entityManager.createQuery(q)
+                .setParameter("status", "Rejected")
+                .setParameter("admin", admin)
+                .setParameter("remark", remark)
                 .setParameter("claimId", claimId)
                 .executeUpdate();
 

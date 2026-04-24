@@ -16,11 +16,9 @@ public class Claim {
     @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
 
-
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime claimDate;
-
 
     @Lob
     private String description;
@@ -35,14 +33,15 @@ public class Claim {
     @JoinColumn(name = "approved_by")
     private Admin approvedBy;
 
-
     private LocalDateTime approvedAt;
 
-    // getters and setters
+    // NEW: admin's remark (reason given on reject, note given on approve, or null)
+    @Lob
+    @Column(name = "remark")
+    private String remark;
 
 
-    public Claim() {
-    }
+    public Claim() {}
 
     public int getClaimId() {
         return claimId;
@@ -107,5 +106,12 @@ public class Claim {
     public void setApprovedAt(LocalDateTime approvedAt) {
         this.approvedAt = approvedAt;
     }
-}
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+}

@@ -15,7 +15,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     public AdminServiceImpl(AdminDAO adminDAO) {
-
         this.adminDAO = adminDAO;
     }
 
@@ -42,5 +41,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Claim approveClaimById(int claimId, int adminId) throws Exception {
         return adminDAO.approveClaimById(claimId, adminId);
+    }
+
+    @Override
+    public Claim rejectClaimById(int claimId, int adminId, String remark) throws Exception {
+        return adminDAO.rejectClaimById(claimId, adminId, remark);
     }
 }

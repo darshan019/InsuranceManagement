@@ -19,7 +19,8 @@ public class ClaimDAOImpl implements ClaimDAO {
     }
 
     public List<Claim> findNotApproved() {
-        TypedQuery<Claim> query = entityManager.createQuery("from Claim c where c.status != 'approved'", Claim.class);
+        TypedQuery<Claim> query = entityManager.createQuery(
+                "from Claim c where c.status != 'approved'", Claim.class);
         return query.getResultList();
     }
 
@@ -40,7 +41,17 @@ public class ClaimDAOImpl implements ClaimDAO {
 
     @Override
     public void deleteById(int id) {
-        Claim Claim = entityManager.find(Claim.class, id);
-        entityManager.remove(Claim);
+        Claim c = entityManager.find(Claim.class, id);
+        entityManager.remove(c);
+    }
+
+    @Override
+    public boolean existsByPolicyId(int policyId) {
+        Long count = entityManager.createQuery(
+                        "SELECT COUNT(c) FROM Claim c WHERE c.policy.policyId = :pid",
+                        Long.class)
+                .setParameter("pid", policyId)
+                .getSingleResult();
+        return count != null && count > 0;
     }
 }

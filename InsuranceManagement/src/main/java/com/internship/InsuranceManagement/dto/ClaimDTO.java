@@ -15,5 +15,5 @@ public class ClaimDTO {
     private String status;
     private AdminDTO approvedBy;
     private LocalDateTime approvedAt;
+    private String remark;
 }
-
