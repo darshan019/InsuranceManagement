@@ -13,6 +13,11 @@ public class Claim {
     private int claimId;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+
+    @ManyToOne
     @JoinColumn(name = "policy_id", nullable = false)
     private Policy policy;
 

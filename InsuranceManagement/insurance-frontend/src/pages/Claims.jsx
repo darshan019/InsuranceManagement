@@ -33,6 +33,7 @@ export default function Claims() {
       if (role === 'CUSTOMER') {
         const storedIds = JSON.parse(
           localStorage.getItem('myClaimIds_' + user.userId) || '[]'
+
         );
         const results = [];
         for (const cid of storedIds) {
