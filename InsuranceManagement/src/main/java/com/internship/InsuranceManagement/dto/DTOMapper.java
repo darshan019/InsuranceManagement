@@ -68,6 +68,7 @@ public class DTOMapper {
         if (c == null) return null;
         return new ClaimDTO(
                 c.getClaimId(),
+                toCustomerDTO(c.getCustomer()),
                 toPolicyDTO(c.getPolicy()),
                 c.getClaimDate(),
                 c.getDescription(),

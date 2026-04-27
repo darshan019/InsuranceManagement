@@ -2,6 +2,9 @@ CREATE DATABASE IF NOT EXISTS `InsuranceManagement_DB`;
 USE `InsuranceManagement_DB`;
 
 
+
+
+
 DROP TABLE IF EXISTS Payment;
 DROP TABLE IF EXISTS Claim;
 DROP TABLE IF EXISTS Policy;
@@ -88,6 +91,7 @@ CREATE TABLE Policy (
 -- Claim table
 CREATE TABLE Claim (
   claim_id INT AUTO_INCREMENT PRIMARY KEY,
+  customer_id INT,
   policy_id INT NOT NULL,
   claim_date TIMESTAMP NOT NULL,
   description TEXT,
@@ -95,6 +99,7 @@ CREATE TABLE Claim (
   status VARCHAR(50) NOT NULL,
   approved_by INT,
   approved_at TIMESTAMP,
+  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
   FOREIGN KEY (policy_id) REFERENCES Policy(policy_id),
   FOREIGN KEY (approved_by) REFERENCES Admin(admin_id)
 );
@@ -141,10 +146,10 @@ INSERT INTO Category (type_id, category_name, premium_amount, coverage_amount) V
 (3, 'Premium Life', 9600, 20000000);
 
 -- Customers
-INSERT INTO Customer (username, email, password, address, date_of_birth) VALUES
-('arun_k', 'arun@example.com', 'pass123', 'Chennai, TN', '1995-06-15'),
-('meera_s', 'meera@example.com', 'secure456', 'Bangalore, KA', '1990-09-20'),
-('rahul_p', 'rahul@example.com', 'rahul789', 'Hyderabad, TS', '1988-12-05');
+-- INSERT INTO Customer (username, email, password, address, date_of_birth) VALUES
+-- ('arun_k', 'arun@example.com', 'pass123', 'Chennai, TN', '1995-06-15'),
+-- ('meera_s', 'meera@example.com', 'secure456', 'Bangalore, KA', '1990-09-20'),
+-- ('rahul_p', 'rahul@example.com', 'rahul789', 'Hyderabad, TS', '1988-12-05');
 
 -- Agents
 INSERT INTO Agent (name, email, phone,password) VALUES
@@ -163,22 +168,22 @@ INSERT INTO Policy_template (agent_id, type_id, category_id, template_name, prem
 (2, 3, 8, 'Life – Premium', 9600, 20000000);
 
 -- Customer policies (purchases linked to templates)
-INSERT INTO Policy (customer_id, template_id, policy_number, start_date, end_date, status) VALUES
-(1, 1, 'POL-MOT-0001', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active'),
-(2, 3, 'POL-PROP-0002', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active'),
-(3, 4, 'POL-LIFE-0003', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active');
+-- INSERT INTO Policy (customer_id, template_id, policy_number, start_date, end_date, status) VALUES
+-- (1, 1, 'POL-MOT-0001', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active'),
+-- (2, 3, 'POL-PROP-0002', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active'),
+-- (3, 4, 'POL-LIFE-0003', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), 'Active');
 
 -- Claims
-INSERT INTO Claim (policy_id, claim_date, description, claim_amount, status) VALUES
-(1, NOW(), 'Accident damage to bike', 20000, 'Pending'),
-(2, NOW(), 'Fire damage to kitchen', 150000, 'Approved'),
-(3, NOW(), 'Life insurance payout request', 20000000, 'Pending');
+-- INSERT INTO Claim (policy_id, claim_date, description, claim_amount, status) VALUES
+-- (1, NOW(), 'Accident damage to bike', 20000, 'Pending'),
+-- (2, NOW(), 'Fire damage to kitchen', 150000, 'Approved'),
+-- (3, NOW(), 'Life insurance payout request', 20000000, 'Pending');
 
 -- Payments (with one deliberately old payment for testing)
-INSERT INTO Payment (customer_id, policy_id, payment_date, amount, payment_method, status) VALUES
-(1, 1, '2026-02-10 11:38:05', 1500.00, 'Credit Card', 'Completed'),
-(2, 2, NOW(), 20000.00, 'Net Banking', 'Completed'),
-(3, 3, NOW(), 9600.00, 'Debit Card', 'Completed');
+-- INSERT INTO Payment (customer_id, policy_id, payment_date, amount, payment_method, status) VALUES
+-- (1, 1, '2026-02-10 11:38:05', 1500.00, 'Credit Card', 'Completed'),
+-- (2, 2, NOW(), 20000.00, 'Net Banking', 'Completed'),
+-- (3, 3, NOW(), 9600.00, 'Debit Card', 'Completed');
 
 -- Admin
 INSERT INTO Admin (username, email, password)
@@ -203,7 +208,7 @@ LEFT JOIN Payment pay ON pay.policy_id = p.policy_id
 SET p.status = 'PENDING'
 WHERE pay.payment_id IS NULL
   AND UPPER(p.status) NOT LIKE '%CANCEL%';
-  SET SQL_SAFE_UPDATES = 1;
+  -- SET SQL_SAFE_UPDATES = 1;
 
 -- 3. For existing policies that DO have at least one payment,
 --    set their next_premium_date to 1 year after their most recent payment.
@@ -216,6 +221,11 @@ JOIN (
 SET p.next_premium_date = DATE_ADD(last_pay.last_paid, INTERVAL 1 YEAR),
     p.status = 'ACTIVE'
 WHERE UPPER(p.status) NOT LIKE '%CANCEL%';
+
+
+ALTER TABLE Claim
+    ADD COLUMN remark LONGTEXT NULL;
+
 -- Check data
 SELECT * FROM Policy_template;
 SELECT * FROM Policy;
@@ -238,4 +248,7 @@ select* from payment;
 update payment set payment_date="2026-03-23 15:25:58" where payment_id=2;
 select* from claim;
 select* from login_audit;
-SELECT * FROM login_audit where user_type ='ADMIN'ORDER BY action_time ASC ;
+SELECT * FROM login_audit where user_type ='ADMIN'ORDER BY action_time ASC;
+
+
+

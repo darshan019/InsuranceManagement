@@ -37,6 +37,14 @@ public class ClaimRestController {
                 .toList();
     }
 
+    @GetMapping("/claims/customer/{customerId}")
+    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN','AGENT')")
+    public List<ClaimDTO> getClaimsByCustomer(@PathVariable int customerId) {
+        return claimService.findByCustomerId(customerId).stream()
+                .map(DTOMapper::toClaimDTO)
+                .toList();
+    }
+
     @GetMapping("/claims/{claimId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CUSTOMER')")
     public ClaimDTO getClaim(@PathVariable int claimId) {
@@ -55,4 +63,6 @@ public class ClaimRestController {
     public void deleteClaim(@PathVariable int claimId) {
         claimService.deleteById(claimId);
     }
+
+
 }

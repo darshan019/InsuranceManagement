@@ -11,4 +11,5 @@ public interface ClaimService {
     Claim findById(int id);
     void deleteById(int id);
     List<Claim> findNotApproved();
+    List<Claim> findByCustomerId(int customerId);
 }

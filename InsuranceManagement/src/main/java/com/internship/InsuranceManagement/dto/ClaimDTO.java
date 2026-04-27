@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 public class ClaimDTO {
     private int claimId;
+    private CustomerDTO customer;
     private PolicyDTO policy;
     private LocalDateTime claimDate;
     private String description;

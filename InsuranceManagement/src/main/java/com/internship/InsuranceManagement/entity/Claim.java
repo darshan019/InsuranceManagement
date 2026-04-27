@@ -48,12 +48,20 @@ public class Claim {
 
     public Claim() {}
 
+
     public int getClaimId() {
         return claimId;
     }
 
     public void setClaimId(int claimId) {
         this.claimId = claimId;
+    }
+
+    public Customer getCustomer(){
+        return customer;
+    }
+    public void setCustomer(Customer customer){
+        this.customer=customer;
     }
 
     public Policy getPolicy() {

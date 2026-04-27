@@ -54,4 +54,14 @@ public class ClaimDAOImpl implements ClaimDAO {
                 .getSingleResult();
         return count != null && count > 0;
     }
+
+    @Override
+    public List<Claim> findByCustomerId(int customerId) {
+        return entityManager.createQuery(
+                        "FROM Claim c WHERE c.customer.customerId = :cid " +
+                                "OR (c.customer IS NULL AND c.policy.customer.customerId = :cid)",
+                        Claim.class)
+                .setParameter("cid", customerId)
+                .getResultList();
+    }
 }

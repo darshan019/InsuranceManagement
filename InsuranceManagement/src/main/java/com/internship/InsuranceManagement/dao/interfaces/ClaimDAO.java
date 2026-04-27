@@ -14,4 +14,5 @@ public interface ClaimDAO {
 
     // Returns true if a claim already exists for the given policy
     boolean existsByPolicyId(int policyId);
+    List<Claim> findByCustomerId(int customerId);
 }

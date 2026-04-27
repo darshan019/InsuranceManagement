@@ -95,4 +95,10 @@ public class ClaimServiceImpl implements ClaimService {
     public void deleteById(int id) {
         claimDAO.deleteById(id);
     }
+
+    @Override
+    @Transactional
+    public List<Claim> findByCustomerId(int customerId){
+        return claimDAO.findByCustomerId(customerId);
+    }
 }
