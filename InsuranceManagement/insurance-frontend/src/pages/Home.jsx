@@ -1,32 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
-// Inline SVG icons — no external deps, consistent stroke style
-const IconMotor = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
-       strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-    <path d="M5 17h-1a1 1 0 0 1-1-1v-3l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5v3a1 1 0 0 1-1 1h-1" />
-    <circle cx="7" cy="17" r="2" />
-    <circle cx="17" cy="17" r="2" />
-    <path d="M9 17h6" />
-    <path d="M5 13h14" />
-  </svg>
-);
-
-const IconLife = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
-       strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-    <path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.5-7 10-7 10z" />
-  </svg>
-);
-
-const IconProperty = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
-       strokeLinecap="round" strokeLinejoin="round" width="32" height="32">
-    <path d="M3 10l9-7 9 7" />
-    <path d="M5 9v11a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9" />
-  </svg>
-);
+import { FaCar, FaHeart, FaHome } from 'react-icons/fa';
 
 export default function Home() {
   const { user } = useAuth();
@@ -41,16 +15,19 @@ export default function Home() {
 
   return (
     <div className="home-page">
+      {/* ---------- Header ---------- */}
       <header className="public-header">
         <div className="public-header-inner">
           <div className="brand">
             <span className="brand-mark">IM</span>
             <span className="brand-name">Insurance Management</span>
           </div>
+
           <nav className="public-nav">
             <a href="#offerings">Plans</a>
             <a href="#why">Why us</a>
             <a href="#contact">Contact</a>
+
             {user ? (
               <button className="btn-outline" onClick={goToDashboard}>
                 Go to Dashboard
@@ -65,13 +42,15 @@ export default function Home() {
         </div>
       </header>
 
+      {/* ---------- Hero ---------- */}
       <section className="hero">
         <div className="hero-inner">
           <h1>Insurance, made simple.</h1>
           <p className="hero-sub">
             Protect what matters most. Explore motor, life, and property
-            insurance plans from trusted agents &mdash; all in one place.
+            insurance plans from trusted agents — all in one place.
           </p>
+
           <div className="hero-actions">
             {user ? (
               <button className="btn-solid btn-lg" onClick={goToDashboard}>
@@ -87,6 +66,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ---------- Offerings ---------- */}
       <section id="offerings" className="section">
         <div className="section-inner">
           <h2>What we offer</h2>
@@ -96,35 +76,42 @@ export default function Home() {
 
           <div className="offering-grid">
             <div className="offering-card">
-              <div className="offering-icon-wrap"><IconMotor /></div>
+              <div className="offering-icon-wrap">
+                <FaCar size={32} />
+              </div>
               <h3>Motor Insurance</h3>
               <p>
                 Comprehensive cover for cars, two-wheelers, and commercial
-                vehicles. Third-party liability, accident protection, and more.
+                vehicles. Third-party liability and accident protection.
               </p>
             </div>
 
             <div className="offering-card">
-              <div className="offering-icon-wrap"><IconLife /></div>
+              <div className="offering-icon-wrap">
+                <FaHeart size={32} />
+              </div>
               <h3>Life Insurance</h3>
               <p>
-                Term and whole-life plans that secure your family's future.
-                Flexible premiums, strong coverage, and reliable payouts.
+                Term and whole-life plans that secure your family’s future
+                with flexible premiums and reliable payouts.
               </p>
             </div>
 
             <div className="offering-card">
-              <div className="offering-icon-wrap"><IconProperty /></div>
+              <div className="offering-icon-wrap">
+                <FaHome size={32} />
+              </div>
               <h3>Property Insurance</h3>
               <p>
-                Protect your home, office, or rented property against fire,
-                theft, and natural disasters with tailored plans.
+                Protect your home or office against fire, theft, and natural
+                disasters with tailored coverage.
               </p>
             </div>
           </div>
         </div>
       </section>
 
+      {/* ---------- Why Us ---------- */}
       <section id="why" className="section section-alt">
         <div className="section-inner">
           <h2>Why choose us</h2>
@@ -133,27 +120,31 @@ export default function Home() {
             <div className="feature-item">
               <div className="feature-num">01</div>
               <h4>Transparent Plans</h4>
-              <p>Clear premiums, clear coverage. No fine-print surprises.</p>
+              <p>Clear premiums and coverage with no hidden clauses.</p>
             </div>
+
             <div className="feature-item">
               <div className="feature-num">02</div>
               <h4>Fast Claims</h4>
-              <p>Submit a claim online and track its status in real time.</p>
+              <p>File claims online and track status in real time.</p>
             </div>
+
             <div className="feature-item">
               <div className="feature-num">03</div>
               <h4>Trusted Agents</h4>
-              <p>Work with certified agents who help you pick the right plan.</p>
+              <p>Certified agents to guide you at every step.</p>
             </div>
+
             <div className="feature-item">
               <div className="feature-num">04</div>
               <h4>Secure Payments</h4>
-              <p>Pay premiums safely via UPI, cards, or net banking.</p>
+              <p>Safe payments via cards, net banking, or UPI.</p>
             </div>
           </div>
         </div>
       </section>
 
+      {/* ---------- CTA ---------- */}
       {!user && (
         <section className="cta-strip">
           <div className="section-inner cta-inner">
@@ -161,11 +152,14 @@ export default function Home() {
               <h3>Ready to get covered?</h3>
               <p>Create a customer account and browse plans in minutes.</p>
             </div>
-            <Link to="/register" className="btn-solid btn-lg">Create Account</Link>
+            <Link to="/register" className="btn-solid btn-lg">
+              Create Account
+            </Link>
           </div>
         </section>
       )}
 
+      {/* ---------- Footer ---------- */}
       <footer id="contact" className="public-footer">
         <div className="section-inner footer-grid">
           <div>
@@ -174,10 +168,11 @@ export default function Home() {
               <span className="brand-name">Insurance Management</span>
             </div>
             <p className="footer-muted">
-              A simple insurance management platform for customers, agents,
-              and administrators.
+              A simple insurance management platform for customers,
+              agents, and administrators.
             </p>
           </div>
+
           <div>
             <h5>Plans</h5>
             <ul>
@@ -186,6 +181,7 @@ export default function Home() {
               <li>Property</li>
             </ul>
           </div>
+
           <div>
             <h5>Company</h5>
             <ul>
@@ -194,17 +190,21 @@ export default function Home() {
               <li>Partners</li>
             </ul>
           </div>
+
           <div>
             <h5>Contact</h5>
             <ul>
               <li>support@insurance.example</li>
               <li>+91 1800-000-000</li>
-              <li>Mon &ndash; Sat, 9am &ndash; 6pm</li>
+              <li>Mon – Sat, 9am – 6pm</li>
             </ul>
           </div>
         </div>
+
         <div className="footer-bottom">
-          <span>&copy; {new Date().getFullYear()} Insurance Management. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} Insurance Management. All rights reserved.
+          </span>
         </div>
       </footer>
     </div>

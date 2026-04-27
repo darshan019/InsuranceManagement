@@ -1,12 +1,9 @@
 import axios from 'axios';
-
 // Change this if your backend runs on a different URL
 const API_BASE_URL = 'http://localhost:9090';
-
 const api = axios.create({
   baseURL: API_BASE_URL
 });
-
 // Attach JWT token to all requests if available
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
@@ -15,7 +12,6 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
-
 // If we get 401, clear the session
 api.interceptors.response.use(
   (response) => response,
@@ -34,5 +30,4 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 export default api;

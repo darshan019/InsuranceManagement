@@ -1,19 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
   const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
-
   if (!user) return null;
-
   const role = user.role;
-
   return (
     <div className="navbar">
       <h2>Insurance Management</h2>
@@ -50,7 +45,6 @@ export default function Navbar() {
           </>
         )}
       </div>
-
       <div className="navbar-user">
         {user.email} ({role})
         <button className="logout-btn" onClick={handleLogout}>Logout</button>
