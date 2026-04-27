@@ -1,41 +1,22 @@
 import { useEffect, useState } from 'react';
-
 import { useLocation } from 'react-router-dom';
-
 import api from '../api';
-
 import { useAuth } from '../context/AuthContext';
-
 export default function Claims() {
-
   const { user } = useAuth();
-
   const location = useLocation();
-
   const [claims, setClaims] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState('');
-
   const [success, setSuccess] = useState('');
-
   const [showForm, setShowForm] = useState(false);
-
   const [form, setForm] = useState({ policyId: '', description: '', claimAmount: '' });
-
   // Reject modal (admin)
-
   const [rejectingClaim, setRejectingClaim] = useState(null);
-
   const [rejectReason, setRejectReason] = useState('');
-
   const [rejecting, setRejecting] = useState(false);
-
   const role = user ? user.role : '';
-
-  useEffect(() => {
-
+useEffect(() => {
     if (location.state && location.state.policyId) {
 
       setForm((f) => ({ ...f, policyId: String(location.state.policyId) }));
